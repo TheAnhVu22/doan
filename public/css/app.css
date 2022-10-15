@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.header-table th {
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+tr td {
+    text-align: center !important;
+}
