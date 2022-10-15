@@ -292,18 +292,27 @@ return [
     'menu' => [
         [
             'text' => 'Thống kê',
-            'route'  => 'user.index',
-            'icon' => 'fas fa-fw fa-user',
+            'route'  => 'dashboard',
+            'icon' => 'fas fa-chart-line',
+            'active' => ['dashboard']
         ],
         [
             'text' => 'Quản lý nhân viên',
+            'route'  => 'admin.index',
+            'icon' => 'fas fa-fw fa-user',
+            'active' => ['admin/admins', 'admin/admins/*']
+        ],
+        [
+            'text' => 'Quản lý khách hàng',
             'route'  => 'user.index',
             'icon' => 'fas fa-fw fa-user',
+            'active' => ['admin/users', 'admin/users/*']
         ],
         [
             'text' => 'Quản lý đơn hàng',
             'route'  => 'order.index',
             'icon' => 'fas fa-shopping-bag',
+            'active' => ['admin/orders', 'admin/orders/*']
         ],
         [
             'text'    => 'Quản lý sản phẩm',
@@ -312,18 +321,22 @@ return [
                 [
                     'text' => 'Danh mục sản phẩm',
                     'route'  => 'category_product.index',
+                    'active' => ['admin/categories', 'admin/categories/*']
                 ],
                 [
                     'text' => 'Thương hiệu',
                     'route'  => 'brand.index',
+                    'active' => ['admin/brands', 'admin/brands/*']
                 ],
                 [
                     'text' => 'Sản phẩm',
                     'route'  => 'product.index',
+                    'active' => ['admin/products', 'admin/products/*']
                 ],
                 [
                     'text' => 'Bình luận sản phẩm',
                     'route'  => 'comment.index',
+                    'active' => ['admin/comments', 'admin/comments/*']
                 ],
             ],
         ],
@@ -334,10 +347,12 @@ return [
                 [
                     'text' => 'Danh mục bài viết',
                     'route'  => 'category_post.index',
+                    'active' => ['admin/category-posts', 'admin/category-posts/*']
                 ],
                 [
                     'text' => 'Bài viết',
                     'route'  => 'post.index',
+                    'active' => ['admin/posts', 'admin/posts/*']
                 ],
             ],
         ],
@@ -345,11 +360,13 @@ return [
             'text' => 'Phí vận chuyển',
             'route'  => 'shipping.fee',
             'icon' => 'fas fa-truck',
+            'active' => ['admin/shippings', 'admin/shippings/*']
         ],
         [
             'text' => 'Khuyến mãi',
             'route'  => 'coupon.index',
             'icon' => 'fas fa-gift',
+            'active' => ['admin/coupons', 'admin/coupons/*']
         ],
     ],
 
