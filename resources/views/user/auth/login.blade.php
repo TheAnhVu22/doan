@@ -44,13 +44,19 @@
                             </div>
 
                             <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
+                                <div class="col-md-4">
+                                    <a href="{{ route('forget_password') }}" class="px-0 forgetPass text-wrap">
+                                        Quên mật khẩu?
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    <button type="submit" class="btn btn-primary mb-lg-0 mb-md-1">
                                         Đăng nhập
                                     </button>
-                                    <a href="{{ route('forget_password') }}" class="px-0 btn btn-link forgetPass">
-                                        Quên mật khẩu ?
+                                    <a href="{{ route('user_register') }}" class="btn btn-primary">
+                                        Đăng ký
                                     </a>
+                                    
                                 </div>
                             </div>
                         </form>

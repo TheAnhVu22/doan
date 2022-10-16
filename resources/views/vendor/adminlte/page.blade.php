@@ -7,6 +7,9 @@
     @yield('css')
     <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css">
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())
@@ -17,19 +20,19 @@
     <div class="wrapper">
 
         {{-- Preloader Animation --}}
-        @if($layoutHelper->isPreloaderEnabled())
+        @if ($layoutHelper->isPreloaderEnabled())
             @include('adminlte::partials.common.preloader')
         @endif
 
         {{-- Top Navbar --}}
-        @if($layoutHelper->isLayoutTopnavEnabled())
+        @if ($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')
         @else
             @include('adminlte::partials.navbar.navbar')
         @endif
 
         {{-- Left Main Sidebar --}}
-        @if(!$layoutHelper->isLayoutTopnavEnabled())
+        @if (!$layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.sidebar.left-sidebar')
         @endif
 
@@ -46,7 +49,7 @@
         @endif
 
         {{-- Right Control Sidebar --}}
-        @if(config('adminlte.right_sidebar'))
+        @if (config('adminlte.right_sidebar'))
             @include('adminlte::partials.sidebar.right-sidebar')
         @endif
 
@@ -60,4 +63,16 @@
     <script src="https://kit.fontawesome.com/f8077388f9.js" crossorigin="anonymous"></script>
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('js/modalDelete.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $('.select2').select2({
+            theme: 'bootstrap4',
+            language: {
+                'noResults': function() {
+                    return 'Không tìm thấy dữ liệu';
+                }
+            }
+        });
+    </script>
 @stop

@@ -21,13 +21,13 @@ return [
     'alpha_dash' => ':attribute chỉ có thể chứa các chữ cái, các chữ số, dấu gạch ngang và dấu gạch dưới.',
     'alpha_num' => ':attribute chỉ có thể chứa các chữ cái và các chữ số.',
     'array' => ':attribute phải là một mảng.',
-    'before' => 'attribute phải là một ngày trước :date.',
-    'before_or_equal' => 'attribute phải là một ngày trước hoặc bằng :date.',
+    'before' => ':attribute phải là một ngày trước :date.',
+    'before_or_equal' => ':attribute phải là một ngày trước hoặc bằng :date.',
     'between' => [
-        'numeric' => 'attribute phải ở giữa :min và :max.',
-        'file' => 'attribute phải ở giữa :min và :max kilobytes.',
-        'string' => 'attribute phải ở giữa :min và :max ký tự.',
-        'array' => 'attribute phải có giữa :min và :max phần tử.',
+        'numeric' => ':attribute phải ở giữa :min và :max.',
+        'file' => ':attribute phải ở giữa :min và :max kilobytes.',
+        'string' => ':attribute phải ở giữa :min và :max ký tự.',
+        'array' => ':attribute phải có giữa :min và :max phần tử.',
     ],
     'boolean' => 'Thuộc tính phải đúng hoặc sai.',
     'confirmed' => 'Xác nhận thuộc tính không khớp.',
@@ -96,7 +96,7 @@ return [
     'password' => 'password is incorrect.',
     'present' => ':attribute field must be present.',
     'regex' => ':attribute định dạng không hợp lệ.',
-    'required' => ':attribute bắt buộc.',
+    'required' => 'Vui lòng nhập :attribute.',
     'required_if' => ':attribute bắt buộc khi :other là :value.',
     'required_unless' => ':attribute bắt buộc trừ khi :other trong :values.',
     'required_with' => ':attribute bắt buộc khi :values là present.',
@@ -134,7 +134,7 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
+        ':attribute-name' => [
             'rule-name' => 'custom-message',
         ],
     ],
@@ -167,6 +167,8 @@ return [
         'image' => 'Ảnh',
         'author_name' => 'Tên tác giả',
         'price' => 'Giá bán',
-        'tags' => 'Nhãn loại'
+        'tags' => 'Nhãn loại',
+        'name' => 'Tên',
+        'email' => 'Email'
     ],
 ];

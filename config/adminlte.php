@@ -329,6 +329,11 @@ return [
                     'active' => ['admin/brands', 'admin/brands/*']
                 ],
                 [
+                    'text' => 'Tag',
+                    'route'  => 'tag.index',
+                    'active' => ['tag/brands', 'tag/brands/*']
+                ],
+                [
                     'text' => 'Sản phẩm',
                     'route'  => 'product.index',
                     'active' => ['admin/products', 'admin/products/*']
@@ -358,7 +363,7 @@ return [
         ],
         [
             'text' => 'Phí vận chuyển',
-            'route'  => 'shipping.fee',
+            'route'  => 'shipping.index',
             'icon' => 'fas fa-truck',
             'active' => ['admin/shippings', 'admin/shippings/*']
         ],

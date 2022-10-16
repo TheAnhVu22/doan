@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('username', 50)->unique();
-            $table->string('email', 50)->unique();
+            $table->string('email', 255)->unique();
             $table->string('password', 255);
             $table->text('avatar')->nullable();
             $table->string('phone', 11);

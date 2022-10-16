@@ -21,13 +21,11 @@ class User extends Authenticatable
         'password',
         'provider_id',
         'status',
-        'user_token'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'user_token'
     ];
 
     public function setPasswordAttribute($value)

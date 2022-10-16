@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('slug', 255)->unique();
             $table->text('description')->nullable();
             $table->integer('price');
-            $table->text('tags')->nullable();
             $table->integer('quantity')->default(0);
             $table->integer('views')->default(0);
             $table->tinyInteger('is_active')->default(1);

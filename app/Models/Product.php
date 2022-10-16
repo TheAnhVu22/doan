@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\base\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -45,6 +46,16 @@ class Product extends BaseModel
     public function productImages(): HasMany
     {
         return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->BelongsToMany(
+            Tag::class,
+            'product_tags',
+            'product_id',
+            'tag_id'
+        )->withTimestamps();
     }
 
     public function setNameAttribute($value)

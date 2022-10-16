@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserStoreRequest;
 use App\Mail\MailNotify;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Mail;
 
 class UserLoginController extends Controller
@@ -34,6 +37,26 @@ class UserLoginController extends Controller
         } else {
             return redirect()->route('user_login')->withErrors('Tên Đăng Nhập Hoặc Mật Khẩu Sai');
         }
+    }
+
+    public function showUserRegisterForm()
+    {
+        return view('user.auth.register');
+    }
+
+    public function userRegister(UserStoreRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $params = $request->validated();
+            User::create($params);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+
+        DB::commit();
+        return redirect()->route('user_login')->with('status', 'Đăng Ký Tài Khoản Thành Công');
     }
 
     public function userLogout()
