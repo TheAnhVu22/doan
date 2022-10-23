@@ -16,4 +16,9 @@ class CategoryPostRepository extends BaseRepository
     {
         return new CategoryPost();
     }
+
+    public function all(array $columns = ['*'], array $relation = [])
+    {
+        return $this->model->with($relation)->ofIsActive()->get($columns);
+    }
 }

@@ -16,4 +16,9 @@ class CategoryProductRepository extends BaseRepository
     {
         return new CategoryProduct();
     }
+
+    public function all(array $columns = ['*'], array $relation = [])
+    {
+        return $this->model->with($relation)->ofIsActive()->get($columns);
+    }
 }

@@ -50,4 +50,9 @@ class Order extends BaseModel
     {
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
+
+    public function getStatusOrder($status)
+    {
+        return $this->STATUS_ORDER[$status] ?? '';
+    }
 }

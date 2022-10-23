@@ -10,6 +10,16 @@ use Illuminate\Support\Str;
 
 class Product extends BaseModel
 {
+
+    const ACCESSORIES = [
+        10 => 'Sạc, cáp',
+        20 => 'Bàn phím',
+        30 => 'Chuột',
+        40 => 'Thẻ nhớ',
+        50 => 'USB',
+        60 => 'SSD'
+    ];
+
     protected $fillable = [
         'category_id',
         'brand_id',
@@ -62,5 +72,10 @@ class Product extends BaseModel
     {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
+    }
+
+    public function scopeOfIsActive($query)
+    {
+        return $query->where('is_active', 1);
     }
 }

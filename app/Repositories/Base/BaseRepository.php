@@ -41,6 +41,11 @@ abstract class BaseRepository
         return $this->model->with($relation)->findOrFail($id, $columns);
     }
 
+    public function search(string $key, string $column, array $relation = [])
+    {
+        return $this->model->with($relation)->where($column, $key)->firstOrFail();
+    }
+
     public function create(array $input)
     {
         return $this->model->create($input);

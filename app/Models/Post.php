@@ -31,4 +31,9 @@ class Post extends BaseModel
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
+
+    public function scopeOfIsActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 }

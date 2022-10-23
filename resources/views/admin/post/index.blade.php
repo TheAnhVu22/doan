@@ -31,7 +31,7 @@
                             <td>{{ $post->name }}</td>
                             <td>{{ $post->categoryPost?->name }}</td>
                             <td>{{ $post->author_name }}</td>
-                            <td>{{ $post->view }}</td>
+                            <td>{{ $post->views }}</td>
                             <td>{{ $post->is_active === config('consts.BLOCK') ? 'Bị Khóa' : 'Kích Hoạt' }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">

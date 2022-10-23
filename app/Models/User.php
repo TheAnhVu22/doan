@@ -37,4 +37,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
+
+    public function scopeOfIsActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
 }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    {{-- select 2 --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css">
 @stop
@@ -64,6 +65,7 @@
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('js/modalDelete.js') }}"></script>
 
+    {{-- select 2 --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         $('.select2').select2({

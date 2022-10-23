@@ -16,4 +16,9 @@ class BrandRepository extends BaseRepository
     {
         return new BrandProduct();
     }
+
+    public function all(array $columns = ['*'], array $relation = [])
+    {
+        return $this->model->with($relation)->ofIsActive()->get($columns);
+    }
 }
