@@ -9,7 +9,7 @@
 @section('content')
     <div class="container">
         @include('admin.layouts.alert')
-        <form action="{{ route('user.update', ['user' => $user]) }}" id="UpdateUser" method="post" enctype='multipart/form-data'>
+        <form action="{{ route('user.update', ['user' => $user]) }}" id="UpdateUser" method="post">
             @csrf
             @method("PUT")
             @include('admin.user._form')
