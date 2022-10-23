@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html>
+@extends('user.commons.layout')
 
-<head>
-    <meta charset="utf-8">
-    <title>Đăng nhập khách hàng</title>
+@section('title', 'ATVSHOP')
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+@push('css')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@endpush
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-</head>
-
-<body>
+@section('content')
     <div class="container">
-        <div class="row d-flex justify-content-center align-middle">
+        <div class="row d-flex justify-content-center align-middle mb-5">
             <div class="col-md-6">
                 <div class="card" style="margin-top: 10rem;">
                     <div class="card-header text-center">
@@ -56,7 +48,9 @@
                                     <a href="{{ route('user_register') }}" class="btn btn-primary">
                                         Đăng ký
                                     </a>
-                                    
+                                    <a href="{{ route('login.google') }}" class="btn btn-danger btn-block mt-3">
+                                        <i class="fab fa-google"></i> Tiếp tục với Google
+                                    </a>
                                 </div>
                             </div>
                         </form>
@@ -65,6 +59,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+@stop

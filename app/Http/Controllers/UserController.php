@@ -7,7 +7,6 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Repositories\UserRepository;
 use Exception;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,5 +81,32 @@ class UserController extends Controller
         }
 
         return redirect()->route('user.index')->with('status', 'Xóa Khách Hàng Thành Công');
+    }
+
+    public function updateUserInfo(User $user)
+    {
+        if (!isCurrentUser($user->id)) {
+            abort(404);
+        }
+        return view('user.auth.edit', compact('user'));
+    }
+
+    public function updateAccount(UserUpdateRequest $request, User $user)
+    {
+        if (!isCurrentUser($user->id)) {
+            abort(404);
+        }
+
+        DB::beginTransaction();
+        try {
+            $params = $request->validated();
+            $this->userRepo->update($user, $params);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+
+        DB::commit();
+        return back()->with('status', 'Cập Nhật Thông Tin Tài Khoản Thành Công');
     }
 }

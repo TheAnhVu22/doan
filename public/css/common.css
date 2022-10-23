@@ -1,0 +1,151 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+header {
+    min-height: 50px;
+}
+
+.header_top {
+    padding: 5px;
+    background: rgb(11, 115, 241);
+}
+
+#header_top p {
+    align-items: center;
+    margin: 0;
+    color: white;
+}
+
+#menu {
+    padding: 10px 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.menu-product {
+    flex: 1;
+    display: flex;
+    justify-content: start;
+}
+
+.nav-right {
+    flex: 1;
+    display: flex;
+    justify-content: end;
+}
+
+.nav-right li, .navbar-nav li {
+    margin: 0 0.8rem;
+}
+
+footer {
+    min-height: 50px;
+    background: rgb(247, 243, 243);
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+    background-color: rgb(221, 217, 213);
+}
+
+.dropdown-menu a {
+    padding: 5px;
+}
+
+a.active {
+    background-color: rgb(107, 165, 237);
+    padding: 2px 5px;
+    border-radius: 5%;
+}
+
+#button-scroll-top {
+    display: inline-block;
+    background-color: #3c00ff;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border-radius: 4px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    transition: background-color .3s,
+        opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+#button-scroll-top::after {
+    content: "\f077";
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1em;
+    line-height: 30px;
+    color: #fff;
+}
+
+#button-scroll-top:hover {
+    cursor: pointer;
+    background-color: #333;
+}
+
+#button-scroll-top:active {
+    background-color: #555;
+}
+
+#button-scroll-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.content {
+    width: 77%;
+    margin: 50px auto;
+    font-family: 'Merriweather', serif;
+    font-size: 17px;
+    color: #6c767a;
+    line-height: 1.9;
+}
+
+@media (min-width: 500px) {
+    #button-scroll-top {
+        margin: 30px;
+    }
+}
+
+.content h1 {
+    margin-bottom: -10px;
+    color: #03a9f4;
+    line-height: 1.5;
+}
+
+.content h3 {
+    font-style: italic;
+    color: #96a2a7;
+}
+
+.left-sidebar {
+    margin: 0 auto 30px;
+    position: sticky !important;
+    top: 5%;
+    z-index: 99;
+    padding: 5px;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+a.card {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.select2-container {
+    width: inherit !important;
+}

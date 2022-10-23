@@ -11,3 +11,7 @@ body {
 tr td {
     text-align: center !important;
 }
+
+.select2-container {
+    width: inherit !important;
+}

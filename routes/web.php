@@ -1,64 +1,86 @@
 <?php
 
-use App\Http\Controllers\AdminAuth\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\CategoryPostController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CouponController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ShippingController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\UserLoginController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TagsController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login/google', [UserLoginController::class,'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [UserLoginController::class,'handleGoogleCallback']);
+
+Route::get('user-login', [UserLoginController::class, 'showUserLoginForm'])->name('user_login');
+Route::post('user-login', [UserLoginController::class, 'userLogin'])->name('user_login_handle');
+Route::post('user-logout', [UserLoginController::class, 'userLogout'])->name('user_logout');
+Route::get('forget-password', [UserLoginController::class, 'forgetPassword'])->name('forget_password');
+Route::post('forget-password', [UserLoginController::class, 'forgetPasswordHandle'])->name('forget_password_handle');
+Route::get('change-password', [UserLoginController::class, 'changePassword'])->name('change_password');
+Route::post('change-password', [UserLoginController::class, 'changePasswordHandle'])->name('change_password_handle');
+Route::get('user-register', [UserLoginController::class, 'showUserRegisterForm'])->name('user_register');
+Route::post('user-register', [UserLoginController::class, 'userRegister'])->name('user_register_handle');
+
+Route::get('/category-product/{slug}', [HomeController::class, 'getProductByCategory'])->name('category_product');
+Route::get('/products/{slug}', [HomeController::class, 'getProductDetail'])->name('product_detail');
+Route::get('/category-news', [HomeController::class, 'getNews'])->name('show_list_news');
+Route::get('/news/{slug}', [HomeController::class, 'getNewsDetail'])->name('news_detail');
+Route::get('/search-product', [HomeController::class, 'search'])->name('search_product');
+
+Route::get('/carts', [CheckoutController::class, 'showCart'])->name('cart.index');
+
+Route::middleware('auth:user')->group(function () {
+    Route::get('/checkouts', [CheckoutController::class, 'checkoutForm'])->name('cart.checkout');
+    Route::get('/manager-account/{user}', [HomeController::class, 'managerAccount'])->name('manager_account');
+    Route::get('/manager-order/{user}', [HomeController::class, 'managerOrder'])->name('manager_order');
+    Route::get('/update-account/{user}', [UserController::class, 'updateUserInfo'])->name('update_info_account');
+    Route::put('update-account/{user}', [UserController::class, 'updateAccount'])->name('update_account');
 });
 
 Route::prefix('/admin')->group(function () {
-    Route::get('login', [LoginController::class, 'getLogin']);
-    Route::post('login', [LoginController::class, 'login'])->name('login');
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin_login');
+    Route::post('login', [LoginController::class, 'Login'])->name('login');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::post('update-fee', [ShippingController::class, 'updateFee'])->name('shipping.update_fee');
+
         Route::resource('categories', CategoryProductController::class, ['names' => 'category_product'])->parameters(['categories' => 'categoryProduct']);
         Route::resource('brands', BrandProductController::class, ['names' => 'brand'])->parameters(['brands' => 'brand']);
         Route::resource('products', ProductController::class, ['names' => 'product'])->parameters(['products' => 'product']);
         Route::resource('posts', PostController::class, ['names' => 'post'])->parameters(['posts' => 'post']);
         Route::resource('category-posts', CategoryPostController::class, ['names' => 'category_post'])->parameters(['category-posts' => 'categoryPost']);
-        Route::resource('customers', CustomerController::class, ['names' => 'customer'])->parameters(['customers' => 'customer']);
-        Route::resource('coupons', CouponController::class, ['names' => 'coupon'])->parameters(['coupons' => 'coupon']);
         Route::resource('users', UserController::class, ['names' => 'user'])->parameters(['users' => 'user']);
+        Route::resource('coupons', CouponController::class, ['names' => 'coupon'])->parameters(['coupons' => 'coupon']);
+        Route::resource('admins', AdminController::class, ['names' => 'admin'])->parameters(['admins' => 'admin']);
         Route::resource('orders', OrderController::class, ['names' => 'order'])->parameters(['orders' => 'order']);
         Route::resource('comments', CommentController::class, ['names' => 'comment'])->parameters(['comments' => 'comment']);
-        Route::get('admin/fee', [ShippingController::class, 'fee'])->name('shipping.fee');
+        Route::resource('tags', TagsController::class, ['names' => 'tag'])->parameters(['tags' => 'tag']);
         Route::resource('shippings', ShippingController::class, ['names' => 'shipping'])->parameters(['shippings' => 'shipping']);
     });
 });
 
-Route::post('ckeditor/upload', [CkeditorController::class,'upload'])->name('ckeditor.upload');
+Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
 
-Route::post('select_gallery',[ProductImageController::class, 'select_gallery'])->name('select_gallery');
-Route::post('insert_gallery/{project}',[ProductImageController::class, 'insert_gallery'])->name('insert_gallery');
-Route::post('update_name',[ProductImageController::class, 'update_name'])->name('update_name');
-Route::post('delete_image',[ProductImageController::class, 'delete_image'])->name('delete_image');
-Route::post('update_gallery',[ProductImageController::class, 'update_gallery'])->name('update_gallery');
+Route::post('select_gallery', [ProductImageController::class, 'select_gallery'])->name('select_gallery');
+Route::post('insert_gallery/{project}', [ProductImageController::class, 'insert_gallery'])->name('insert_gallery');
+Route::post('update_name', [ProductImageController::class, 'update_name'])->name('update_name');
+Route::post('delete_image', [ProductImageController::class, 'delete_image'])->name('delete_image');
+Route::post('update_gallery', [ProductImageController::class, 'update_gallery'])->name('update_gallery');
 // Route::resource('cart', CartController::class);

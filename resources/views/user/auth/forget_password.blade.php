@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html>
+@extends('user.commons.layout')
 
-<head>
-    <meta charset="utf-8">
-    <title>Quên mật khẩu</title>
+@section('title', 'ATVSHOP')
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+@push('css')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@endpush
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-</head>
-
-<body>
+@section('content')
     <div class="container">
         <div class="row d-flex justify-content-center align-middle">
             <div class="col-md-8">
@@ -34,21 +26,19 @@
                                         name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
                                 </div>
                             </div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col-md-12 text-center">
-                                    <button type="submit" class="btn btn-primary">
-                                        Lấy mật khẩu
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">
+                                Lấy mật khẩu
+                            </button>
+                        </div>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</body>
-
-</html>
+    </div>
+@stop

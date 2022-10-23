@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Laravel\Socialite\Facades\Socialite;
 use Mail;
 
 class UserLoginController extends Controller
@@ -118,5 +119,36 @@ class UserLoginController extends Controller
             return redirect()->route('user_login')->with('status', 'Thay đổi mật khẩu thành công');
         }
         return redirect()->route('forget_password')->withErrors('Link đã quá hạn. Vui lòng nhập lại email!');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+
+        $this->_registerOrLoginUser($user);
+        return redirect()->route('homepage');
+    }
+
+    protected function _registerOrLoginUser($data)
+    {
+        $user = User::where('email', $data->email)->first();
+
+        if (!$user) {
+            $user = new User();
+            $user->name = $data->name;
+            $user->email = $data->email;
+            $user->provider_id = $data->id;
+            $user->save();
+        } else {
+            $user->provider_id = $data->id;
+            $user->save();
+        }
+
+        Auth::login($user);
     }
 }
