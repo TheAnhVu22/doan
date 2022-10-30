@@ -3,12 +3,7 @@
 @section('title', 'ATVSHOP')
 
 @push('css')
-    <style>
-        .img-news {
-            max-width: 100%;
-            height: 185px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
 @endpush
 
 @section('content')
@@ -45,8 +40,8 @@
                         </div>
                         <div class="form-group">
                             <label for="">Từ khóa:</label>
-                            <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Nhập từ khóa"
-                                autocomplete="off" value="{{ request()->get('keyword') }}">
+                            <input type="text" name="keyword" id="keyword" class="form-control"
+                                placeholder="Nhập từ khóa" autocomplete="off" value="{{ request()->get('keyword') }}">
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Lọc</button>
@@ -59,8 +54,9 @@
                 <div class="row d-flex justify-content-around">
                     @forelse ($news as $new)
                         <a class="card m-3 col-sm-5 p-0" href="{{ route('news_detail', ['slug' => $new->slug]) }}">
-                            <img class="img-news card-img-top" src="{{ asset('images/authors/' . $new->image) }}"
-                                alt="image news">
+                            <div class="img-hover-zoom">
+                                <img height="100%" src="{{ asset('images/authors/' . $new->image) }}" alt="image news">
+                            </div>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $new->name }}</h5>
                                 <p class="card-text mt-auto">
@@ -88,8 +84,8 @@
 
 @push('js')
     <script>
-        $(function(){
-            $('#resetBtn').click(function(){
+        $(function() {
+            $('#resetBtn').click(function() {
                 $("select#category_slug").val("").change();
                 $("select#type_sort").val("1").change();
                 $("#keyword").val("");

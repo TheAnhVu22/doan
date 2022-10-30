@@ -16,6 +16,7 @@ class CategoryProductStoreRequest extends FormRequest
         return [
             'name' => 'required|unique:category_products|max:100',
             'description' => 'nullable|max:1000',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'is_active' => 'nullable|in:1,2',
         ];
     }

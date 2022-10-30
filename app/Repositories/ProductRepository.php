@@ -131,6 +131,10 @@ class ProductRepository extends BaseRepository
             }
         }
 
+        if (isset($request['notPaginate'])) {
+            return $products->ofIsActive()->take(10)->get();
+        }
+
         return $products->ofIsActive()->paginate(12);
     }
 
@@ -166,5 +170,10 @@ class ProductRepository extends BaseRepository
             })->ofIsActive()->take(6)->get()->except($product->id);
 
         return $product;
+    }
+
+    public function getProductNewest()
+    {
+        return $this->model->latest()->paginate(12);
     }
 }

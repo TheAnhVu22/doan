@@ -52,4 +52,14 @@ class PostRepository extends BaseRepository
 
         return $news;
     }
+
+    public function getPostNewest($slug = null)
+    {
+        return $this->model->with('categoryPost')
+            ->whereHas('categoryPost', function ($query) use ($slug) {
+                return $query->when(isset($slug), function ($query) use ($slug) {
+                    return $query->where('slug', $slug);
+                });
+            })->orderBy('id', 'DESC')->take(6)->get();
+    }
 }

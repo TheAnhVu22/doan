@@ -11,6 +11,17 @@
             </div>
 
             <div class="form-group">
+                <label for="image">Ảnh:</label>
+                <input type="file" class="form-control img_preview"
+                    value="{{ old('image', $categoryProduct->image) }}" onchange="previewFile(this)" name="image">
+                <div class="col-2 mt-1">
+                    <img id="previewimg" class="border border-dark rounded-circle"
+                        src="{{ asset('images/categories_product/' . $categoryProduct->image) }}" alt="image"
+                        height="160" width="160">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="description">Thông tin chi tiết:</label><label style="color: red">(*)</label>
                 <textarea class="form-control" name="description" rows="3" autocomplete="off">{{ old('description', $categoryProduct->description) }}</textarea>
             </div>
@@ -37,9 +48,14 @@
 
             <div class="box-footer text-center pb-2">
                 <a href="{{ route('category_product.index') }}" class="btn btn-primary">Quay Lại</a>
-                <button type="summit" class="btn btn-primary">{{ $categoryProduct->id ? 'Cập Nhật' : 'Tạo Mới' }}</button>
+                <button type="summit"
+                    class="btn btn-primary">{{ $categoryProduct->id ? 'Cập Nhật' : 'Tạo Mới' }}</button>
             </div>
         </div>
     </div>
 
 </div>
+
+@push('js')
+    <script src="{{ asset('js/preview_image.js') }}"></script>
+@endpush

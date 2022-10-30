@@ -17,6 +17,7 @@
                     <tr class="header-table">
                         <th>ID</th>
                         <th>Tên thương hiệu</th>
+                        <th>Ảnh</th>
                         <th>Mô tả</th>
                         <th>Trạng thái</th>
                         <th></th>
@@ -27,6 +28,11 @@
                         <tr>
                             <td>{{ $brand->id }}</td>
                             <td>{{ $brand->name }}</td>
+                            <td>
+                                <img id="previewimg" class="border border-dark rounded-circle"
+                                src="{{ asset('images/brands/' . $brand->image) }}"
+                                alt="slide" height="160" width="160">
+                            </td>
                             <td>{{ $brand->description }}</td>
                             <td>{{ $brand->is_active === config('consts.BLOCK') ? 'Bị Khóa' : 'Kích Hoạt' }}</td>
                             <td>

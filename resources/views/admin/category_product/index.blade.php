@@ -17,6 +17,7 @@
                     <tr class="header-table">
                         <th>ID</th>
                         <th>Tên danh mục</th>
+                        <th>Ảnh</th>
                         <th>Mô tả</th>
                         <th>Trạng thái</th>
                         <th></th>
@@ -27,12 +28,19 @@
                         <tr>
                             <td>{{ $categoryProduct->id }}</td>
                             <td>{{ $categoryProduct->name }}</td>
+                            <td>
+                                <img id="previewimg" class="border border-dark rounded-circle"
+                                    src="{{ asset('images/categories_product/' . $categoryProduct->image) }}" alt="slide"
+                                    height="160" width="160">
+                            </td>
                             <td>{{ $categoryProduct->description }}</td>
                             <td>{{ $categoryProduct->is_active === config('consts.BLOCK') ? 'Bị Khóa' : 'Kích Hoạt' }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <a href="{{ route('category_product.edit', ['categoryProduct' => $categoryProduct]) }}" class="btn btn-primary m-1">Sửa</a>
-                                    <button class="btn btn-danger m-1 btnDelete" data-toggle="modal" data-target="#modalDelete"
+                                    <a href="{{ route('category_product.edit', ['categoryProduct' => $categoryProduct]) }}"
+                                        class="btn btn-primary m-1">Sửa</a>
+                                    <button class="btn btn-danger m-1 btnDelete" data-toggle="modal"
+                                        data-target="#modalDelete"
                                         data-action="{{ route('category_product.destroy', ['categoryProduct' => $categoryProduct]) }}">
                                         Xóa
                                     </button>

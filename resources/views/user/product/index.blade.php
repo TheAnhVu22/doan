@@ -3,6 +3,7 @@
 @section('title', 'ATVSHOP')
 
 @push('css')
+    <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
     <style>
         .col-sm-3half {
             position: relative;
@@ -59,7 +60,8 @@
                             <label for="brand_slug">Thương hiệu:</label>
                             <select id="brand_slug" class="form-control select2" name="brand_slug[]" multiple="multiple">
                                 @foreach ($brands as $brand)
-                                    <option value="{{ $brand->slug }}" {{ in_array($brand->slug, $brandArr) ? 'selected' : '' }}
+                                    <option value="{{ $brand->slug }}"
+                                        {{ in_array($brand->slug, $brandArr) ? 'selected' : '' }}
                                         {{ $brand->slug == request()->get('brand_slug') ? 'selected' : '' }}>
                                         {{ $brand->name }}
                                     </option>
@@ -101,9 +103,11 @@
                         <a class="card col-sm-3half p-0 m-lg-2 m-md-1 mr-sm-2 m-1"
                             href="{{ route('product_detail', ['slug' => $product->slug]) }}">
                             <div>
-                                <img class="img-product card-img-top"
-                                    src="{{ asset('uploads/product_images/' . optional($product->productImages)[0]?->image) }}"
-                                    alt="image product">
+                                <div class="img-hover-zoom">
+                                    <img class="img-product"
+                                        src="{{ asset('uploads/product_images/' . optional($product->productImages)[0]?->image) }}"
+                                        alt="image product">
+                                </div>
                                 <div class="card-body d-flex flex-column text-left p-2">
                                     <b>{{ $product->name }}</b>
                                     <p class="card-text mt-auto">
@@ -118,7 +122,7 @@
                             </div>
                         </a>
                     @empty
-                    <h5 class="text-center">Không có sản phẩm nào</h5>
+                        <h5 class="text-center">Không có sản phẩm nào</h5>
                     @endforelse
                 </div>
 

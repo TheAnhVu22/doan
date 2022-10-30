@@ -9,7 +9,7 @@
 @section('content')
     <div class="container">
         @include('admin.layouts.alert')
-        <form action="{{ route('category_product.update', ['categoryProduct' => $categoryProduct]) }}" method="post">
+        <form action="{{ route('category_product.update', ['categoryProduct' => $categoryProduct]) }}" method="post" enctype='multipart/form-data'>
             @csrf
             @method("PUT")
             @include('admin.category_product._form')

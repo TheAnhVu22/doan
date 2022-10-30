@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/news.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/product_detail.css') }}">
+    <style>
+        .lSSlideOuter, .lSSlideWrapper, .lightSlider, .lightSlider li, .img-hover-zoom{
+            height: auto !important;
+            width: 100%;
+        }
+        .img-hover-zoom img{
+            width: inherit;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -25,18 +35,17 @@
         </nav>
 
         <div class="row col-12">
-            <div class="col-sm-4" id="image_product">
+            <div class="col-sm-4">
                 <ul id="imageGallery">
                     @foreach ($product->productImages as $key => $image)
                         <li data-thumb="{{ asset('uploads/product_images/' . $image->image) }}"
                             data-src="{{ asset('uploads/product_images/' . $image->image) }}">
-                            <img height="300" width="100%" src="{{ asset('uploads/product_images/' . $image->image) }}" />
+                            <div class="img-hover-zoom">
+                                <img height="100%" src="{{ asset('uploads/product_images/' . $image->image) }}" />
+                            </div>
                         </li>
                     @endforeach
                 </ul>
-            </div>
-            <div class="col-sm-4" id="image_product_smartphone">
-                <img height="300" width="100%" src="{{ asset('uploads/product_images/' . $image->image) }}" />
             </div>
             <div class="col-sm-4 border-bottom pt-3">
                 <h4>{{ $product->name }}</h4>
