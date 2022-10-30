@@ -128,9 +128,14 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $keywords = $request->keywords;
-        $products = $keywords ? $this->productRepo->searchProduct($keywords)
+        $parrams = $request->all();
+        $products = $parrams['keywords'] ? $this->productRepo->searchProduct($parrams)
             : [];
-        return view('user.product.search', compact('products'));
+        $categories_product = $this->cateProductRepo->all(['id', 'name', 'slug']);
+        $brands = $this->brandRepo->all(['id', 'name', 'slug']);
+        $priceArr = $request->sort_price ?? [];
+        $categoryArr = $request->category_slug ?? [];
+        $brandArr = $request->brand_slug ?? [];
+        return view('user.product.search', compact('products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
     }
 }

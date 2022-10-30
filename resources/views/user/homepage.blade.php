@@ -25,7 +25,7 @@
             background-color: white;
         }
 
-        .new_product{
+        .new_product {
             padding: 10px;
             border-radius: 10px;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -33,6 +33,36 @@
 
         .link_new_product:hover {
             background-color: white;
+        }
+
+        #phone .card-header {
+            background-image: linear-gradient(to bottom,
+                    rgba(4, 255, 0, 0.5),
+                    rgba(0, 0, 255, 0.5));
+        }
+
+        #laptop .card-header {
+            background-image: linear-gradient(to bottom,
+                    rgba(255, 255, 0, 0.5),
+                    rgba(0, 0, 255, 0.5));
+        }
+
+        #tivi .card-header {
+            background-image: linear-gradient(to bottom,
+                    rgba(4, 255, 0, 0.5),
+                    rgba(255, 106, 0, 0.5));
+        }
+
+        #headphone .card-header {
+            background-image: linear-gradient(to bottom,
+                    rgba(255, 247, 0, 0.5),
+                    rgba(255, 0, 115, 0.5));
+        }
+
+        #watch .card-header {
+            background-image: linear-gradient(to bottom,
+                    rgba(4, 255, 0, 0.5),
+                    rgba(255, 0, 221, 0.5));
         }
     </style>
 @endpush
@@ -42,7 +72,7 @@
     <div class="container">
         @include('user.commons.banner')
 
-        <div class="card mt-3">
+        <div class="card mt-3" id="phone">
             <div class="card-header d-flex justify-content-between">
                 <h6><b>Điện thoại</b></h6>
                 <small><a href="{{ route('category_product', ['slug' => 'dien-thoai']) }}">Xem tất cả <i
@@ -53,7 +83,7 @@
             </div>
         </div>
 
-        <div class="card mt-3">
+        <div class="card mt-3" id="laptop">
             <div class="card-header d-flex justify-content-between">
                 <h6><b>Máy tính</b></h6>
                 <small><a href="{{ route('category_product', ['slug' => 'may-tinh']) }}">Xem tất cả <i
@@ -64,7 +94,7 @@
             </div>
         </div>
 
-        <div class="card mt-3">
+        <div class="card mt-3" id="tivi">
             <div class="card-header d-flex justify-content-between">
                 <h6><b>Ti vi</b></h6>
                 <small><a href="{{ route('category_product', ['slug' => 'tivi']) }}">Xem tất cả <i
@@ -75,7 +105,7 @@
             </div>
         </div>
 
-        <div class="card mt-3">
+        <div class="card mt-3" id="headphone">
             <div class="card-header d-flex justify-content-between">
                 <h6><b>Tai nghe</b></h6>
                 <small><a href="{{ route('category_product', ['slug' => 'tai-nghe']) }}">Xem tất cả <i
@@ -86,7 +116,7 @@
             </div>
         </div>
 
-        <div class="card mt-3">
+        <div class="card mt-3" id="watch">
             <div class="card-header d-flex justify-content-between">
                 <h6><b>Đồng hồ</b></h6>
                 <small><a href="{{ route('category_product', ['slug' => 'dong-ho']) }}">Xem tất cả <i
@@ -142,7 +172,8 @@
             </div>
             <div class="d-flex flex-wrap mb-3">
                 @foreach ($newest_products as $product)
-                    <a class="col-6 col-sm-4 col-md-3 col-lg-2 mt-3 link_new_product" href="{{ route('product_detail', ['slug' => $product->slug]) }}">
+                    <a class="col-6 col-sm-4 col-md-3 col-lg-2 mt-3 link_new_product"
+                        href="{{ route('product_detail', ['slug' => $product->slug]) }}">
                         <div class="card new_product">
                             <div class="img-hover-zoom">
                                 <img class="img-product" width="100%" height="100%"
@@ -171,8 +202,7 @@
                         <div class="card new_product">
                             <div class="img-hover-zoom">
                                 <img class="img-product" width="100%" height="100%"
-                                    src="{{ asset('images/authors/' . $news->image) }}"
-                                    alt="image news">
+                                    src="{{ asset('images/authors/' . $news->image) }}" alt="image news">
                             </div>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $news->name }}</h5>

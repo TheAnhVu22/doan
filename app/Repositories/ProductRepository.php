@@ -54,20 +54,8 @@ class ProductRepository extends BaseRepository
         return true;
     }
 
-    public function getProduct(string $slug, $request, $type)
+    public function querySearchProduct($products, $request)
     {
-        $products = $this->model->with('brand', 'category', 'productImages', 'comments', 'tags');
-
-        if ($type === 'category') {
-            $products->whereHas('category', function ($query) use ($slug) {
-                return $query->where('slug', $slug);
-            });
-        } else if ($type === 'brand') {
-            $products->whereHas('brand', function ($query) use ($slug) {
-                return $query->where('slug', $slug);
-            });
-        }
-
         if (isset($request['brand_slug'])) {
             $products->whereHas('brand', function ($query) use ($request) {
                 return $query->whereIn('slug', $request['brand_slug']);
@@ -143,31 +131,55 @@ class ProductRepository extends BaseRepository
                     break;
             }
         }
+    }
+
+    public function getProduct(string $slug, $request, $type)
+    {
+        $products = $this->model->with('brand', 'category', 'productImages', 'comments', 'tags');
+
+        if ($type === 'category') {
+            $products->whereHas('category', function ($query) use ($slug) {
+                return $query->where('slug', $slug);
+            });
+        } else if ($type === 'brand') {
+            $products->whereHas('brand', function ($query) use ($slug) {
+                return $query->where('slug', $slug);
+            });
+        }
+
+        $this->querySearchProduct($products, $request);
 
         if (isset($request['notPaginate'])) {
-            return $products->ofIsActive()->take(10)->get();
+            return $products->ofIsActive()->take(12)->get();
         }
 
         return $products->ofIsActive()->paginate(12);
     }
 
-    public function searchProduct(string $key, array $relation = [])
+    public function searchProduct($request, array $relation = [])
     {
-        return $this->model->join('brand_products', 'products.brand_id', '=', 'brand_products.id')
+        $products = $this->model->join('brand_products', 'products.brand_id', '=', 'brand_products.id')
             ->join('category_products', 'products.category_id', '=', 'category_products.id')
-            ->where(function ($query) use ($key) {
-                $query->where('products.name', 'LIKE', '%' . $key . '%')
-                    ->where('products.is_active', 1);
-            })
-            ->orWhere(function ($query) use ($key) {
-                $query->where('category_products.name', 'LIKE', '%' . $key . '%')
-                    ->where('category_products.is_active', 1);
-            })
-            ->orWhere(function ($query) use ($key) {
-                $query->where('brand_products.name', 'LIKE', '%' . $key . '%')
-                    ->where('brand_products.is_active', 1);
-            })
-            ->get('products.*');
+            ->where(function ($query) use ($request) {
+                $query->where(function ($query) use ($request) {
+                    $query->where('products.name', 'LIKE', '%' . $request['keywords'] . '%')
+                        ->where('products.is_active', 1);
+                })
+                    ->orWhere(function ($query) use ($request) {
+                        $query->where('category_products.name', 'LIKE', '%' .  $request['keywords'] . '%')
+                            ->where('category_products.is_active', 1);
+                    })
+                    ->orWhere(function ($query) use ($request) {
+                        $query->where('brand_products.name', 'LIKE', '%' .  $request['keywords'] . '%')
+                            ->where('brand_products.is_active', 1);
+                    });
+            });
+
+        $products->where(function ($query) use ($request, $products) {
+            $this->querySearchProduct($products, $request);
+        });
+
+        return $products->select('products.*')->paginate(12);
     }
 
     public function search(string $key, string $column, array $relation = [])
