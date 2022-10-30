@@ -157,4 +157,14 @@ class ProductRepository extends BaseRepository
     {
         return $this->model->with($relation)->where($column, $key)->first();
     }
+
+    public function getRelateProduct($product)
+    {
+        $product = $this->model->with('brand', 'category', 'productImages', 'comments', 'tags')
+            ->when($product, function ($query) use ($product) {
+                return $query->where('category_id', $product->category_id);
+            })->ofIsActive()->take(6)->get()->except($product->id);
+
+        return $product;
+    }
 }
