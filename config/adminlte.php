@@ -373,6 +373,12 @@ return [
             'icon' => 'fas fa-gift',
             'active' => ['admin/coupons', 'admin/coupons/*']
         ],
+        [
+            'text' => 'Slide',
+            'route'  => 'slide.index',
+            'icon' => 'fas fa-sliders-v',
+            'active' => ['admin/slides', 'admin/slides/*']
+        ],
     ],
 
     /*
