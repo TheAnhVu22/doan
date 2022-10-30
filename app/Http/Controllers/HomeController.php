@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Slide;
 use App\Models\User;
 use App\Repositories\BrandRepository;
 use App\Repositories\CategoryPostRepository;
@@ -44,24 +45,44 @@ class HomeController extends Controller
 
     public function index()
     {
-        $categories_product = $this->cateProductRepo->all(['id', 'name']);
-        $brands = $this->brandRepo->all(['id', 'name']);
-        $categories_post = $this->catePostRepo->all(['id', 'name']);
-        $products = $this->productRepo->all();
-        return view('user.homepage', compact('brands', 'categories_product', 'categories_post'));
+        $categories_product = $this->cateProductRepo->all();
+        $brands = $this->brandRepo->getBrand();
+        $newest_products = $this->productRepo->getProductNewest();
+        $phones = $this->productRepo->getProduct('dien-thoai', ['type_sort' => 2, 'notPaginate' => true], 'category');
+        $laptops = $this->productRepo->getProduct('may-tinh', ['type_sort' => 2, 'notPaginate' => true], 'category');
+        $headphones = $this->productRepo->getProduct('tai-nghe', ['type_sort' => 2, 'notPaginate' => true], 'category');
+        $tivis = $this->productRepo->getProduct('tivi', ['type_sort' => 2, 'notPaginate' => true], 'category');
+        $watchs = $this->productRepo->getProduct('dong-ho', ['type_sort' => 2, 'notPaginate' => true], 'category');
+        $slides = Slide::all('name', 'image');
+        $news_discount = $this->postRepo->getPostNewest('khuyen-mai');
+        return view('user.homepage', compact('brands', 'categories_product', 'slides', 'newest_products', 'phones', 'laptops', 'headphones', 'tivis', 'watchs', 'news_discount'));
     }
 
     public function getProductByCategory(string $slug = '', Request $request)
     {
-        $products = $this->productRepo->getProductByCategory($slug, $request->all());
+        $products = $this->productRepo->getProduct($slug, $request->all(), 'category');
         $categories_product = $this->cateProductRepo->all(['id', 'name', 'slug']);
         $brands = $this->brandRepo->all(['id', 'name', 'slug']);
         $categorySelected = $this->cateProductRepo->search($slug, 'slug');
         $priceArr = $request->sort_price ?? [];
         $categoryArr = $request->category_slug ?? [];
         $brandArr = $request->brand_slug ?? [];
+        $isCate = true;
 
-        return view('user.product.index', compact('categorySelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
+        return view('user.product.index', compact('categorySelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr', 'isCate'));
+    }
+
+    public function getProductByBrand($slug, Request $request)
+    {
+        $products = $this->productRepo->getProduct($slug, $request->all(), 'brand');
+        $categories_product = $this->cateProductRepo->all(['id', 'name', 'slug']);
+        $brands = $this->brandRepo->all(['id', 'name', 'slug']);
+        $brandSelected = $this->brandRepo->search($slug, 'slug');
+        $priceArr = $request->sort_price ?? [];
+        $categoryArr = $request->category_slug ?? [];
+        $brandArr = $request->brand_slug ?? [];
+
+        return view('user.product.index', compact('brandSelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
     }
 
     public function getProductDetail(string $slug)

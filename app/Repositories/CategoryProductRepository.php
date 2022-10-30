@@ -21,4 +21,9 @@ class CategoryProductRepository extends BaseRepository
     {
         return $this->model->with($relation)->ofIsActive()->get($columns);
     }
+
+    public function getCategory()
+    {
+        return $this->model->take(4)->get();
+    }
 }

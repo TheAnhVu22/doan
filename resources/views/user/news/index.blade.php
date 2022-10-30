@@ -53,7 +53,7 @@
             <div class="col-sm-9 pr-0 text-center">
                 <div class="row d-flex justify-content-around">
                     @forelse ($news as $new)
-                        <a class="card m-3 col-sm-5 p-0" href="{{ route('news_detail', ['slug' => $new->slug]) }}">
+                        <a class="card m-3 col-5 col-md-3 p-0" href="{{ route('news_detail', ['slug' => $new->slug]) }}">
                             <div class="img-hover-zoom">
                                 <img height="100%" src="{{ asset('images/authors/' . $new->image) }}" alt="image news">
                             </div>

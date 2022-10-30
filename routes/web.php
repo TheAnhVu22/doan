@@ -38,6 +38,7 @@ Route::get('user-register', [UserLoginController::class, 'showUserRegisterForm']
 Route::post('user-register', [UserLoginController::class, 'userRegister'])->name('user_register_handle');
 
 Route::get('/category-product/{slug}', [HomeController::class, 'getProductByCategory'])->name('category_product');
+Route::get('/brand/{slug}', [HomeController::class, 'getProductByBrand'])->name('brand');
 Route::get('/products/{slug}', [HomeController::class, 'getProductDetail'])->name('product_detail');
 Route::get('/category-news', [HomeController::class, 'getNews'])->name('show_list_news');
 Route::get('/news/{slug}', [HomeController::class, 'getNewsDetail'])->name('news_detail');

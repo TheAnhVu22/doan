@@ -60,6 +60,6 @@ class PostRepository extends BaseRepository
                 return $query->when(isset($slug), function ($query) use ($slug) {
                     return $query->where('slug', $slug);
                 });
-            })->orderBy('id', 'DESC')->take(6)->get();
+            })->latest()->take(2)->get();
     }
 }

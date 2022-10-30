@@ -5,69 +5,67 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
     <style>
-        .col-sm-3half {
-            position: relative;
-            min-height: 1px;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
         .img-product {
             max-width: 100%;
             height: 200px;
             object-fit: fill;
         }
 
-        @media (max-width: 527px) {
-            .col-sm-3half {
-                width: 47% !important;
-            }
+        .new_product {
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
         }
 
-        @media only screen and (min-width: 527px) {
-            .col-sm-3half {
-                float: left;
-            }
-
-            .col-sm-3half {
-                width: 31%;
-            }
+        .link_product:hover {
+            background-color: white;
         }
     </style>
 @endpush
 
 @section('content')
     <div class="container mt-5">
-        <h3 class="text-center">SẢN PHẨM: {{ $categorySelected->name }}</h3>
+        <h3 class="text-center">@if (isset($isCate))
+            Danh mục: {{ $categorySelected->name }}
+        @else
+            Thương hiệu: {{ $brandSelected->name }}
+        @endif</h3>
         <hr>
         <div class="row">
             <div class="col-md-3">
                 <div class="left-sidebar">
                     <h5 class="text-center">Sắp xếp theo</h5>
                     <form method="get">
-                        {{-- <div class="form-group">
-                            <label for="category_slug">Danh mục:</label>
-                            <select id="category_slug" class="form-control select2" name="category_slug[]" multiple="multiple">
-                                @foreach ($categories_product as $category)
-                                    <option value="{{ $category->slug }}" {{ in_array($category->slug, $categoryArr) ? 'selected' : '' }}
-                                        {{ $category->slug == request()->get('category_slug') ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        <div class="form-group">
-                            <label for="brand_slug">Thương hiệu:</label>
-                            <select id="brand_slug" class="form-control select2" name="brand_slug[]" multiple="multiple">
-                                @foreach ($brands as $brand)
-                                    <option value="{{ $brand->slug }}"
-                                        {{ in_array($brand->slug, $brandArr) ? 'selected' : '' }}
-                                        {{ $brand->slug == request()->get('brand_slug') ? 'selected' : '' }}>
-                                        {{ $brand->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (isset($isCate))
+                            <div class="form-group">
+                                <label for="brand_slug">Thương hiệu:</label>
+                                <select id="brand_slug" class="form-control select2" name="brand_slug[]"
+                                    multiple="multiple">
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->slug }}"
+                                            {{ in_array($brand->slug, $brandArr) ? 'selected' : '' }}
+                                            {{ $brand->slug == request()->get('brand_slug') ? 'selected' : '' }}>
+                                            {{ $brand->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="category_slug">Danh mục:</label>
+                                <select id="category_slug" class="form-control select2" name="category_slug[]"
+                                    multiple="multiple">
+                                    @foreach ($categories_product as $category)
+                                        <option value="{{ $category->slug }}"
+                                            {{ in_array($category->slug, $categoryArr) ? 'selected' : '' }}
+                                            {{ $category->slug == request()->get('category_slug') ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
                         <div class="form-group">
                             <label for="sort_price">Mức giá:</label>
                             <select id="sort_price" class="form-control select2" name="sort_price[]" multiple="multiple">
@@ -97,34 +95,32 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-9 pr-0 text-center">
-                <div class="row">
-                    @forelse ($products as $product)
-                        <a class="card col-sm-3half p-0 m-lg-2 m-md-1 mr-sm-2 m-1"
-                            href="{{ route('product_detail', ['slug' => $product->slug]) }}">
-                            <div>
-                                <div class="img-hover-zoom">
-                                    <img class="img-product"
-                                        src="{{ asset('uploads/product_images/' . optional($product->productImages)[0]?->image) }}"
-                                        alt="image product">
-                                </div>
-                                <div class="card-body d-flex flex-column text-left p-2">
-                                    <b>{{ $product->name }}</b>
-                                    <p class="card-text mt-auto">
-                                    <p>{{ number_format($product->price, 0, ',', '.') }} đ</p>
-                                    <small class="text-muted">
-                                        <span class="text-nowrap"><i class="far fa-comment"></i>
-                                            {{ $product->comments->count() }}
-                                        </span>
-                                    </small>
-                                    </p>
-                                </div>
+            <div class="col-md-9 pr-0 text-center d-flex flex-wrap ">
+                @forelse ($products as $product)
+                    <a class="col-6 col-sm-4 col-lg-3 mt-3 link_product"
+                        href="{{ route('product_detail', ['slug' => $product->slug]) }}">
+                        <div class="card new_product">
+                            <div class="img-hover-zoom">
+                                <img class="img-product"
+                                    src="{{ asset('uploads/product_images/' . optional($product->productImages)[0]?->image) }}"
+                                    alt="image product">
                             </div>
-                        </a>
-                    @empty
-                        <h5 class="text-center">Không có sản phẩm nào</h5>
-                    @endforelse
-                </div>
+                            <div class="d-flex flex-column text-left">
+                                <b>{{ $product->name }}</b>
+                                <p class="card-text mt-auto">
+                                <p>{{ number_format($product->price, 0, ',', '.') }} đ</p>
+                                <small class="text-muted">
+                                    <span class="text-nowrap"><i class="far fa-comment"></i>
+                                        {{ $product->comments->count() }}
+                                    </span>
+                                </small>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <h5 class="text-center">Không có sản phẩm nào</h5>
+                @endforelse
 
                 <br>
                 {{ $products->withQueryString()->links('pagination::bootstrap-4') }}

@@ -54,16 +54,29 @@ class ProductRepository extends BaseRepository
         return true;
     }
 
-    public function getProductByCategory(string $slug, $request)
+    public function getProduct(string $slug, $request, $type)
     {
-        $products = $this->model->with('brand', 'category', 'productImages', 'comments', 'tags')
-            ->whereHas('category', function ($query) use ($slug) {
+        $products = $this->model->with('brand', 'category', 'productImages', 'comments', 'tags');
+
+        if ($type === 'category') {
+            $products->whereHas('category', function ($query) use ($slug) {
                 return $query->where('slug', $slug);
             });
+        } else if ($type === 'brand') {
+            $products->whereHas('brand', function ($query) use ($slug) {
+                return $query->where('slug', $slug);
+            });
+        }
 
         if (isset($request['brand_slug'])) {
             $products->whereHas('brand', function ($query) use ($request) {
                 return $query->whereIn('slug', $request['brand_slug']);
+            });
+        }
+
+        if (isset($request['category_slug'])) {
+            $products->whereHas('category', function ($query) use ($request) {
+                return $query->whereIn('slug', $request['category_slug']);
             });
         }
 

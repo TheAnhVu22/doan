@@ -36,24 +36,6 @@ input#getQuantity {
     object-fit: fill;
 }
 
-li.lslide.active {
-    border: 1px solid;
-}
-
 .description img{
     max-width: 100% !important;
-}
-
-#image_product_smartphone {
-    display: none;
-}
-
-@media only screen and (max-width: 576px) {
-    div#relate-product, #image_product {
-        display: none !important;
-    }
-
-    #image_product_smartphone {
-        display: block;
-    }
 }

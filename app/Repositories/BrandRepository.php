@@ -21,4 +21,9 @@ class BrandRepository extends BaseRepository
     {
         return $this->model->with($relation)->ofIsActive()->get($columns);
     }
+
+    public function getBrand()
+    {
+        return $this->model->take(4)->get();
+    }
 }
