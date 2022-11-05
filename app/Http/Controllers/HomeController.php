@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Rating;
 use App\Models\Slide;
 use App\Models\User;
 use App\Repositories\BrandRepository;
@@ -90,7 +92,13 @@ class HomeController extends Controller
         $product = $this->productRepo->search($slug, 'slug', ['comments', 'productImages']);
         $product->increment('views');
         $relate_products = $this->productRepo->getRelateProduct($product);
-        return view('user.product.detail_product', compact('product', 'relate_products'));
+        $rating = Rating::where('product_id', $product->id)->avg('rating');
+        $rating1 = round($rating, 1);
+        $rating = round($rating);
+        $comments = Comment::where('product_id', $product->id)->whereNull('comment_parent_id')->orderBy('id', 'DESC')->get();
+        $comments_response = Comment::where('product_id', $product->id)->whereNotNull('comment_parent_id')->orderBy('id', 'ASC')->get();
+
+        return view('user.product.detail_product', compact('product', 'relate_products', 'rating1', 'rating', 'comments', 'comments_response'));
     }
 
     public function getNews(Request $request)
@@ -137,5 +145,62 @@ class HomeController extends Controller
         $categoryArr = $request->category_slug ?? [];
         $brandArr = $request->brand_slug ?? [];
         return view('user.product.search', compact('products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
+    }
+
+    public function rating(Request $request)
+    {
+        $validator = \Validator::make(
+            $request->all(),
+            [
+                'rating' => 'required|in:1,2,3,4,5',
+                'phone' => 'required|numeric|digits_between: 10,11',
+                'product_id' => 'required|exists:products,id'
+            ],
+            [
+                'rating.required' => 'chọn sao đánh giá',
+                'rating.in' => 'Sao đánh giá không hợp lệ',
+                'phone.digits_between' => 'Số điện thoại không hợp lệ'
+            ]
+        );
+
+        if ($validator->passes()) {
+            Rating::create($request->all());
+            $rating = Rating::where('product_id', $request->product_id)->avg('rating');
+            $rating1 = round($rating, 1);
+            $rating = round($rating);
+            return view('user.product.rating', compact('rating', 'rating1'));
+        }
+
+        return response()->json(['error' => $validator->errors()->all()]);
+    }
+
+    public function comment(Request $request)
+    {
+        $validator = \Validator::make(
+            $request->all(),
+            [
+                'comment_parent_id' => 'nullable|exists:comments,id',
+                'name' => 'required|string|max:50',
+                'content' => 'required|string|max:500',
+                'product_id' => 'required|exists:products,id'
+            ],
+            [
+                'name.required' => 'Nhập tên',
+                'name.string' => 'Tên không hợp lệ',
+                'name.max' => 'Tên tối đa 50 ký tự',
+                'content.required' => 'Nhập nội dung bình luận',
+                'content.string' => 'Nội dung không hợp lệ',
+                'content.max' => 'Nội dung tối đa 500 ký tự',
+            ]
+        );
+
+        if ($validator->passes()) {
+            Comment::create($request->all());
+            $comments = Comment::where('product_id', $request->product_id)->whereNull('comment_parent_id')->orderBy('id', 'DESC')->get();
+            $comments_response = Comment::where('product_id', $request->product_id)->whereNotNull('comment_parent_id')->orderBy('id', 'ASC')->get();
+            return view('user.product.comment', compact('comments', 'comments_response'));
+        }
+
+        return response()->json(['error' => $validator->errors()->all()]);
     }
 }

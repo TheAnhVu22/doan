@@ -10,31 +10,52 @@
     <div class="container-fluid">
         @include('admin.layouts.alert')
 
-        <a href="{{ route('comment.create') }}" class="btn btn-primary mb-2">Thêm bình luận</a>
         <div class="table-responsive">
             <table class="table table-bordered table-hover datatable">
                 <thead class="thead-dark">
                     <tr class="header-table">
-                        <th>ID</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Người bình luận</th>
-                        <th>Nội dung bình luận</th>
-                        <th></th>
+                        <th class="col-1">ID</th>
+                        <th class="col-2">Tên sản phẩm</th>
+                        <th class="col-1">Người bình luận</th>
+                        <th class="col-3">Nội dung bình luận</th>
+                        <th class="col-3">Nội dung trả lời</th>
+                        <th class="col-2"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($comments as $comment)
                         <tr>
                             <td>{{ $comment->id }}</td>
-                            <td>{{ $comment->product?->name }}</td>
-                            <td>{{ $comment->name }}</td>
+                            <td><a
+                                    href="{{ route('product_detail', ['slug' => $comment->product?->slug]) }}">{{ $comment->product?->name }}</a>
+                            </td>
+                            <td>{{ $comment->name }}
+                                <br>
+                                <small>({{ $comment->created_at }})</small>
+                            </td>
                             <td>{{ $comment->content }}</td>
                             <td>
+                                @foreach ($comments_response as $response)
+                                    @if ($response->comment_parent_id === $comment->id)
+                                        <p>{{ $response->content }}</p>
+                                        <a href="{{ route('comment.edit', ['comment' => $response]) }}"
+                                            class="btn btn-sm btn-primary m-1">Sửa</a>
+                                        <button class="btn btn-sm btn-danger m-1 btnDelete" data-toggle="modal"
+                                            data-target="#modalDelete"
+                                            data-action="{{ route('comment.destroy', ['comment' => $response]) }}">
+                                            Xóa
+                                        </button>
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td>
                                 <div class="d-flex justify-content-center">
-                                    <a href="{{ route('comment.edit', ['comment' => $comment]) }}" class="btn btn-primary m-1">Sửa</a>
-                                    <button class="btn btn-danger m-1 btnDelete" data-toggle="modal" data-target="#modalDelete"
+                                    <a href="{{ route('comment.show', ['comment' => $comment]) }}"
+                                        class="btn btn-sm btn-primary m-1">Phản hồi</a>
+                                    <button class="btn btn-sm btn-danger m-1 btnDelete" data-toggle="modal"
+                                        data-target="#modalDelete"
                                         data-action="{{ route('comment.destroy', ['comment' => $comment]) }}">
-                                        Xóa
+                                        Xóa bình luận
                                     </button>
                                 </div>
                             </td>
