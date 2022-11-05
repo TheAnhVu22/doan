@@ -28,7 +28,8 @@ class ProductUpdateRequest extends ProductStoreRequest
     {
         return [
             'name' => 'Tên sản phẩm',
-            'description' => 'Thông tin sản phẩm'
+            'description' => 'Thông tin sản phẩm',
+            'discount' => 'Giảm giá',
         ];
     }
 }

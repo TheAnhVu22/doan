@@ -34,6 +34,12 @@
         .send_evaluate {
             max-height: 38px;
         }
+
+        .scroll {
+            max-height: 600px;
+            overflow: hidden;
+            overflow-y: auto;
+        }
     </style>
 @endpush
 
@@ -65,11 +71,18 @@
                 </div>
                 <div class="col-sm-6 border-bottom pt-3">
                     <h4>{{ $product->name }}</h4>
-                    <div class="d-flex justify-content-center" id="show_rating">
+                    <div class="ml-3" id="show_rating">
                         @include('user.product.rating')
                     </div>
                     <small>Thương hiệu: <b>{{ $product->brand?->name }}</b></small>
-                    <p class="price">{{ number_format($product->price, 0, ',', '.') }} đ</p>
+                    <p class="price">
+                        @if ($product->discount)
+                            <strike>{{ number_format($product->price, 0, ',', '.') }}</strike>
+                             {{ number_format($product->price * (1 - $product->discount/100), 0, ',', '.') }} đ
+                        @else
+                            {{ number_format($product->price, 0, ',', '.') }} đ
+                        @endif
+                    </p>
                     <p>Tình trạng:
                         @if ($product->quantity === 0)
                             <span class="text-danger">Hết hàng</span>
@@ -157,8 +170,10 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-5" id="comments">
-                @include('user.product.comment')
+            <div class="mt-5 scroll">
+                <div class="mx-5" id="comments">
+                    @include('user.product.comment')
+                </div>
             </div>
         </div>
 

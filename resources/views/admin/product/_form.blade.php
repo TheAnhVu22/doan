@@ -48,6 +48,12 @@
             </div>
 
             <div class="form-group">
+                <label for="discount">Giảm giá (%):</label><label style="color: red">(*)</label>
+                <input type="number" class="form-control" value="{{ old('discount', $product->discount) }}" name="discount"
+                    autocomplete="off">
+            </div>
+
+            <div class="form-group">
                 <label for="quantity">Số lượng:</label><label style="color: red">(*)</label>
                 <input type="number" class="form-control" value="{{ old('quantity', $product->quantity) }}"
                     name="quantity" autocomplete="off">

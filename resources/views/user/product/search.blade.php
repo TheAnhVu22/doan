@@ -101,14 +101,27 @@
                             </div>
                             <div class="d-flex flex-column text-left">
                                 <b>{{ $product->name }}</b>
-                                <p class="card-text mt-auto">
-                                <p>{{ number_format($product->price, 0, ',', '.') }} đ</p>
-                                <small class="text-muted">
-                                    <span class="text-nowrap"><i class="far fa-comment"></i>
-                                        {{ $product->comments->count() }}
-                                    </span>
-                                </small>
-                                </p>
+                                <div class="card-text mt-auto">
+                                    <p>
+                                        {{ number_format($product->price * (1 - $product->discount / 100), 0, ',', '.') }}
+                                        đ
+                                        @if ($product->discount)
+                                            <small>({{ $product->discount }}%)</small>
+                                        @endif
+                                    </p>
+                                    <div class="row ml-2">
+                                        <small class="text-muted mr-1">
+                                            <span class="text-nowrap"><i class="far fa-comment"></i>
+                                                {{ $product->comments->count() }}
+                                            </span>
+                                        </small>
+                                        <small class="text-muted ml-1">
+                                            <span class="text-nowrap"><i class="far fa-star"></i>
+                                                {{ round($product->ratings->avg('rating'), 1) }}
+                                            </span>
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </a>

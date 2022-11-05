@@ -27,6 +27,7 @@ class Product extends BaseModel
         'slug',
         'description',
         'price',
+        'discount',
         'tags',
         'quantity',
         'views',
@@ -51,6 +52,11 @@ class Product extends BaseModel
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'product_id', 'id');
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class, 'product_id', 'id');
     }
 
     public function productImages(): HasMany

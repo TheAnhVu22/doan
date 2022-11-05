@@ -21,6 +21,7 @@
                         <th>Thương hiệu</th>
                         <th>Ảnh</th>
                         <th>Giá bán</th>
+                        <th>Giảm giá</th>
                         <th>Số lượng</th>
                         <th>Lượt xem</th>
                         <th>Trạng thái</th>
@@ -38,6 +39,7 @@
                                 <a href="{{ route('product.show', ['product' => $product]) }}" class="btn btn-sm btn-primary">Quản lý ảnh</a>
                             </td>
                             <td>{{ $product->price }}</td>
+                            <td>{{ $product->discount ?? 0 }}%</td>
                             <td>{{ $product->quantity }}</td>
                             <td>{{ $product->views ?? 0 }}</td>
                             <td>{{ $product->is_active === config('consts.BLOCK') ? 'Bị Khóa' : 'Kích Hoạt' }}</td>

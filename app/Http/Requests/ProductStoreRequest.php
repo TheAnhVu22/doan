@@ -17,6 +17,7 @@ class ProductStoreRequest extends FormRequest
             'name' => 'required|max:200|unique:products',
             'description' => 'nullable',
             'price' => 'required|integer|gt:0|max:1000000000',
+            'discount' => 'nullable|integer|gt:0|max:100',
             'quantity' => 'required|integer|gt:0|max:1000000000',
             'tag_id' => 'nullable|array',
             'tag_id.*' => 'exists:tags,id',
@@ -31,7 +32,8 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name' => 'Tên sản phẩm',
-            'description' => 'Thông tin sản phẩm'
+            'description' => 'Thông tin sản phẩm',
+            'discount' => 'Giảm giá'
         ];
     }
 }
