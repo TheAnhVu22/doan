@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="district">Quận/huyện:</label><label style="color: red">(*)</label>
-    <select class="form-control selectAddress" id="district" name="district_id">
+    <select class="form-control selectAddress district_id" id="district" name="district_id">
         <option value="" selected>Chọn quận/huyện</option>
         @foreach ($districts as $district)
             <option value="{{ $district->id }}"

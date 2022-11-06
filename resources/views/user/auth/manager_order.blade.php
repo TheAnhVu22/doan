@@ -10,6 +10,7 @@
 @section('content')
     <div class="container mt-5">
         <h3>Lịch sử đơn đặt hàng</h3>
+        @include('admin.layouts.alert')
         <div class="table-responsive">
             <table class="table table-bordered table-hover datatable">
                 <thead class="thead-dark">
@@ -24,10 +25,18 @@
                 </thead>
                 <tbody>
                     @forelse ($orders as $order)
+                        @php
+                            $totalPrice = 0;
+                        @endphp
+                        @foreach ($order->orderDetails as $orderDetail)
+                            @php
+                                $totalPrice += $orderDetail->price * $orderDetail->sales_quantity;
+                            @endphp
+                        @endforeach
                         <tr>
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->order_code }}</td>
-                            <td>{{ $order->id }}</td>
+                            <td>{{ number_format($totalPrice, 0, ',', '.') }}đ</td>
                             <td>{{ $order->created_at }}</td>
                             <td>{{ $order->getStatusOrder($order->status) }}</td>
                             <td>

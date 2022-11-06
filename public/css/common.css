@@ -142,3 +142,12 @@ a.card {
 .select2-container {
     width: inherit !important;
 }
+
+.header-table th {
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+tr td {
+    text-align: center !important;
+}

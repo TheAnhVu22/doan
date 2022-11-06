@@ -53,6 +53,6 @@ class Order extends BaseModel
 
     public function getStatusOrder($status)
     {
-        return $this->STATUS_ORDER[$status] ?? '';
+        return self::STATUS_ORDER[$status] ?? '';
     }
 }

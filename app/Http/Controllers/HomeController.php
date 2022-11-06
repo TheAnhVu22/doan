@@ -90,7 +90,7 @@ class HomeController extends Controller
     public function getProductDetail(string $slug)
     {
         $product = $this->productRepo->search($slug, 'slug', ['comments', 'productImages']);
-        $product->increment('views');
+        $product ? $product->increment('views') : '';
         $relate_products = $this->productRepo->getRelateProduct($product);
         $rating = Rating::where('product_id', $product->id)->avg('rating');
         $rating1 = round($rating, 1);

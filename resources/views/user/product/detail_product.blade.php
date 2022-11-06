@@ -78,7 +78,7 @@
                     <p class="price">
                         @if ($product->discount)
                             <strike>{{ number_format($product->price, 0, ',', '.') }}</strike>
-                             {{ number_format($product->price * (1 - $product->discount/100), 0, ',', '.') }} đ
+                            {{ number_format($product->price * (1 - $product->discount / 100), 0, ',', '.') }} đ
                         @else
                             {{ number_format($product->price, 0, ',', '.') }} đ
                         @endif
@@ -90,12 +90,23 @@
                             <span class="text-success">Còn hàng</span>
                             <div class="quantity">
                                 <span class="minus">-</span>
-                                <input type="text" id="getQuantity" name="quantity" value="1"
-                                    onkeydown="return false" />
+                                <input type="text" class="product_qty_{{ $product->id }}" id="getQuantity"
+                                    name="quantity" value="1" onkeydown="return false;" />
                                 <span class="plus">+</span>
                             </div>
+
+                            <input type="hidden" value="{{ $product->id }}" class="product_id_{{ $product->id }}">
+                            <input type="hidden" value="{{ $product->name }}" class="product_name_{{ $product->id }}">
+                            <input type="hidden" value="{{ $product->quantity }}"
+                                class="product_quantity_{{ $product->id }}">
+                            <input type="hidden" value="{{ optional($product->productImages)[0]?->image }}"
+                                class="product_image_{{ $product->id }}">
+                            <input type="hidden" value="{{ $product->price }}"class="product_price_{{ $product->id }}">
+                            <input type="hidden" name="add_product_to_cart" id="add_product_to_cart"
+                                value="{{ route('add_product_to_cart') }}">
+
                             <button type="button" class="mt-1 btn btn-success add-to-cart"
-                                data-id_product="{{ $product->id }}">
+                                data-product_id="{{ $product->id }}">
                                 <i class="fas fa-shopping-cart"></i> Thêm giỏ hàng</button>
                         @endif
                     </p>
@@ -196,6 +207,65 @@
     <script type="text/javascript">
         $(function() {
             var rating = 0;
+            $('.add-to-cart').click(function() {
+                const id = $(this).data('product_id');
+                const product_id = $('.product_id_' + id).val();
+                const product_name = $('.product_name_' + id).val();
+                const product_image = $('.product_image_' + id).val();
+                const product_quantity = $('.product_quantity_' + id).val();
+                const product_price = $('.product_price_' + id).val();
+                const product_qty = $('.product_qty_' + id).val();
+                const url = $('#add_product_to_cart').val();
+                if (parseInt(product_qty) > parseInt(product_quantity)) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Làm ơn đặt nhỏ hơn ' + product_qty,
+                    })
+                } else if (parseInt(product_qty) > 9) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Làm ơn đặt nhỏ hơn 10',
+                    })
+                } else {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_image: product_image,
+                            product_price: product_price,
+                            product_quantity: product_quantity,
+                            product_qty: product_qty,
+                        },
+                        success: function(data) {
+                            if (data.error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: data.error,
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Thêm sản phẩm vào giỏ hàng thành công!',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Đi đến giỏ hàng',
+                                    confirmButtonClass: "btn-success",
+                                    cancelButtonText: "Xem tiếp",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "{{ url('/carts') }}";
+                                    } 
+                                })
+                                // count_cart();
+                                // giohang_hover();
+                            }
+                        }
+                    });
+                }
+            });
 
             function remove_background(product_id) {
                 for (let count = 1; count <= 5; count++) {

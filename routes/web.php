@@ -47,9 +47,16 @@ Route::post('/rating', [HomeController::class, 'rating'])->name('rating');
 Route::post('/comment', [HomeController::class, 'comment'])->name('comment');
 
 Route::get('/carts', [CheckoutController::class, 'showCart'])->name('cart.index');
+Route::post('/add-product-to-cart', [CheckoutController::class, 'addProductToCard'])->name('add_product_to_cart');
+Route::post('/delete-product-in-cart', [CheckoutController::class, 'deleteProductInCart'])->name('delete_product_in_cart');
+Route::post('/update-quantity', [CheckoutController::class, 'updateQuantity'])->name('update_quantity');
+Route::post('/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('apply_coupon');
 
 Route::middleware('auth:user')->group(function () {
     Route::get('/checkouts', [CheckoutController::class, 'checkoutForm'])->name('cart.checkout');
+    Route::post('/checkouts', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
+    Route::post('/apply-feeship', [CheckoutController::class, 'applyFeeship'])->name('apply_feeship');
+
     Route::get('/manager-account/{user}', [HomeController::class, 'managerAccount'])->name('manager_account');
     Route::get('/manager-order/{user}', [HomeController::class, 'managerOrder'])->name('manager_order');
     Route::get('/update-account/{user}', [UserController::class, 'updateUserInfo'])->name('update_info_account');
