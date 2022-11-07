@@ -24,8 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
-Route::get('/login/google', [UserLoginController::class,'redirectToGoogle'])->name('login.google');
-Route::get('/login/google/callback', [UserLoginController::class,'handleGoogleCallback']);
+Route::get('/login/google', [UserLoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [UserLoginController::class, 'handleGoogleCallback']);
 
 Route::get('user-login', [UserLoginController::class, 'showUserLoginForm'])->name('user_login');
 Route::post('user-login', [UserLoginController::class, 'userLogin'])->name('user_login_handle');
@@ -56,7 +56,9 @@ Route::middleware('auth:user')->group(function () {
     Route::get('/checkouts', [CheckoutController::class, 'checkoutForm'])->name('cart.checkout');
     Route::post('/checkouts', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
     Route::post('/apply-feeship', [CheckoutController::class, 'applyFeeship'])->name('apply_feeship');
+    Route::post('/cancel-order', [CheckoutController::class, 'cancelOrder'])->name('cancel_order');
 
+    Route::get('/detail-order/{order}', [HomeController::class, 'detailOrder'])->name('detail_order');
     Route::get('/manager-account/{user}', [HomeController::class, 'managerAccount'])->name('manager_account');
     Route::get('/manager-order/{user}', [HomeController::class, 'managerOrder'])->name('manager_order');
     Route::get('/update-account/{user}', [UserController::class, 'updateUserInfo'])->name('update_info_account');

@@ -184,6 +184,8 @@ class CheckoutService
             $order->shipping_id = $shipping->id;
             $order->order_code = $order_code;
             $order->status = 1;
+            $order->coupon_id =  $coupon?->id;
+            $order->fee_ship = $request['feeShip'];
             $order->save();
 
             if (\Session::get('cart') == true) {
@@ -191,10 +193,8 @@ class CheckoutService
                     $order_details = new OrderDetail();
                     $order_details->order_id = $order->id;
                     $order_details->product_id = $cart['product_id'];
-                    $order_details->coupon_id =  $coupon?->id;
                     $order_details->price = $cart['product_price'];
                     $order_details->sales_quantity = $cart['product_qty'];
-                    $order_details->fee_ship = $request['feeShip'];
                     $order_details->save();
                 }
             }
@@ -208,6 +208,32 @@ class CheckoutService
             \Mail::to($email)->send(new MailNotifyOrder($emailInfo));
 
             \Session::forget('cart');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+        DB::commit();
+        return true;
+    }
+
+    public function cancelOrder($request)
+    {
+        DB::beginTransaction();
+        try {
+            $order = Order::where('order_code', $request['order_code'])->ofNewOrder()->ofUser($request['user_id'])->first();
+            if ($order) {
+
+                $shipping = $order->shipping;
+
+                $order->orderDetails()->delete();
+                $order->delete();
+
+                $shipping->note = $request['reason'];
+                $shipping->save();
+                $shipping->delete();
+            } else {
+                return false;
+            }
         } catch (Exception $e) {
             DB::rollBack();
             return back()->withErrors($e->getMessage())->withInput();

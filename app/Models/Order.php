@@ -33,7 +33,9 @@ class Order extends BaseModel
         'user_id',
         'shipping_id',
         'order_code',
-        'status'
+        'status',
+        'coupon_id',
+        'fee_ship'
     ];
 
     public function user(): BelongsTo
@@ -51,8 +53,33 @@ class Order extends BaseModel
         return $this->hasMany(OrderDetail::class, 'order_id', 'id');
     }
 
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
+    }
+
     public function getStatusOrder($status)
     {
         return self::STATUS_ORDER[$status] ?? '';
+    }
+
+    public function scopeOfUser($query, $id)
+    {
+        return $query->where('user_id', $id);
+    }
+
+    public function scopeOfNewOrder($query)
+    {
+        return $query->where('status', self::STATUS_NEW);
+    }
+
+    public function scopeOfProcessOrder($query)
+    {
+        return $query->where('status', self::STATUS_PROCESSING);
+    }
+
+    public function scopeOfCompletedOrder($query)
+    {
+        return $query->where('status', self::STATUS_COMPLETED);
     }
 }

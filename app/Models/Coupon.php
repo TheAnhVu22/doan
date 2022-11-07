@@ -26,8 +26,8 @@ class Coupon extends BaseModel
         'end_date',
     ];
 
-    public function orderDetails(): HasMany
+    public function orders(): HasMany
     {
-        return $this->hasMany(OrderDetail::class, 'coupon_id', 'id');
+        return $this->hasMany(Order::class, 'coupon_id', 'id');
     }
 }

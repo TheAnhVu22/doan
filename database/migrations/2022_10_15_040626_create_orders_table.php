@@ -14,6 +14,8 @@ return new class extends Migration
             $table->foreignId('shipping_id')->constrained('shippings')->onUpdate('cascade')->onDelete('cascade');
             $table->string('order_code', 8)->unique();
             $table->tinyInteger('status')->default(1);
+            $table->integer('fee_ship');
+            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

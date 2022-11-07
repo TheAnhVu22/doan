@@ -16,7 +16,6 @@
                 <thead class="thead-dark">
                     <tr class="header-table">
                         <th>STT</th>
-                        <th>Mã đơn hàng</th>
                         <th>Tổng tiền</th>
                         <th>Ngày đặt hàng</th>
                         <th>Trạng thái</th>
@@ -35,17 +34,19 @@
                         @endforeach
                         <tr>
                             <td>{{ $order->id }}</td>
-                            <td>{{ $order->order_code }}</td>
                             <td>{{ number_format($totalPrice, 0, ',', '.') }}đ</td>
                             <td>{{ $order->created_at }}</td>
                             <td>{{ $order->getStatusOrder($order->status) }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <a href="#" class="btn btn-primary m-1">Xem chi tiết</a>
-                                    <button class="btn btn-danger m-1 btnDelete" data-toggle="modal"
-                                        data-target="#modalDelete" data-action="#">
-                                        Xóa
-                                    </button>
+                                    <a href="{{ route('detail_order', ['order' => $order->order_code]) }}" class="btn btn-primary m-1">Xem chi tiết</a>
+                                    @if ($order->status === \App\Models\Order::STATUS_NEW)
+                                        <button type="button" class="btn btn-danger m-1 btnCancelOrder"
+                                            data-id={{ $order->order_code }} data-url={{ route('cancel_order') }}>
+                                            Hủy đơn
+                                        </button>
+                                        <input type="hidden" id="user_id" value={{ \Auth::guard('user')->user()->id }}>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -62,4 +63,60 @@
 @push('js')
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('js/datatable.js') }}"></script>
+    <script>
+        $(function() {
+            $('.btnCancelOrder').click(function() {
+                const order_code = $(this).data('id');
+                const user_id = $('#user_id').val();
+                const url = $(this).data('url');
+                Swal.fire({
+                    title: 'Bạn có chắc muốn hủy đơn hàng? Nhập lý do muốn hủy',
+                    input: 'textarea',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    cancelButtonText: 'Quay lại',
+                    confirmButtonText: 'Hủy đơn',
+                    showLoaderOnConfirm: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (result.value) {
+                            $.ajax({
+                                url: url,
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                        'content'),
+                                },
+                                data: {
+                                    order_code: order_code,
+                                    reason: result.value,
+                                    user_id: user_id
+                                },
+                                success: function(data) {
+                                    if (data.error) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            text: data.error,
+                                        })
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            text: data,
+                                        })
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 3000);
+                                    }
+                                }
+                            });
+                        } else {
+                            Swal.fire('Hủy đơn thất bại! vui lòng nhập lý do muốn hủy đơn.')
+                        }
+                    }
+                })
+            });
+        });
+    </script>
 @endpush

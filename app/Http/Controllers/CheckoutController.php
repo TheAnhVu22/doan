@@ -180,10 +180,33 @@ class CheckoutController extends Controller
     {
         $parrams = $request->validated();
         $result = $this->checkoutService->checkoutStore($parrams);
-        if($result){
+        if ($result) {
             return redirect()->route('manager_order', ['user' => \Auth::guard('user')->user()])->with('status', 'Đặt hàng thành công!');
         } else {
             return back()->withErrors('Có lỗi xảy ra!');
         }
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $validator = \Validator::make(
+            $request->all(),
+            [
+                'order_code' => 'required|exists:orders,order_code',
+                'reason' => 'required|max:200',
+                'user_id' => 'required|exists:users,id',
+            ]
+        );
+
+        if ($validator->passes()) {
+            $result = $this->checkoutService->cancelOrder($request->all());
+            if ($result === true) {
+                return 'Hủy đơn hàng thành công!';
+            } else {
+                return response()->json(['error' => 'Có lỗi xảy ra, hủy đơn không thành công']);
+            }
+        }
+
+        return response()->json(['error' => 'Thông tin không chính xác']);
     }
 }

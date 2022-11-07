@@ -12,10 +12,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('order_id')->constrained('orders')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('price');
             $table->integer('sales_quantity');
-            $table->integer('fee_ship');
             $table->timestamps();
             $table->softDeletes();
         });

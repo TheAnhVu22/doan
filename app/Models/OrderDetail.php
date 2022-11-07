@@ -10,10 +10,8 @@ class OrderDetail extends BaseModel
     protected $fillable = [
         'order_id',
         'product_id',
-        'coupon_id',
         'price',
         'sales_quantity',
-        'feeship'
     ];
 
     public function order(): BelongsTo
@@ -24,10 +22,5 @@ class OrderDetail extends BaseModel
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
-    }
-
-    public function coupon(): BelongsTo
-    {
-        return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
     }
 }

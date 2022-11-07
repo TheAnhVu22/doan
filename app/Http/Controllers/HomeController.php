@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Rating;
 use App\Models\Slide;
@@ -202,5 +203,14 @@ class HomeController extends Controller
         }
 
         return response()->json(['error' => $validator->errors()->all()]);
+    }
+
+    public function detailOrder($order_code)
+    {
+        $order = $this->orderRepo->search($order_code, 'order_code', ['orderDetails', 'shipping', 'orderDetails.product', 'coupon']);
+        if (!$order || !isCurrentUser($order->user_id)) {
+            abort(404);
+        }
+        return view('user.auth.detail_order', compact('order'));
     }
 }
