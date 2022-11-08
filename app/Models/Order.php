@@ -45,12 +45,12 @@ class Order extends BaseModel
 
     public function shipping(): BelongsTo
     {
-        return $this->belongsTo(Shipping::class, 'shipping_id', 'id');
+        return $this->belongsTo(Shipping::class, 'shipping_id', 'id')->withTrashed();
     }
 
     public function orderDetails(): HasMany
     {
-        return $this->hasMany(OrderDetail::class, 'order_id', 'id');
+        return $this->hasMany(OrderDetail::class, 'order_id', 'id')->withTrashed();
     }
 
     public function coupon(): BelongsTo
@@ -61,6 +61,11 @@ class Order extends BaseModel
     public function getStatusOrder($status)
     {
         return self::STATUS_ORDER[$status] ?? '';
+    }
+
+    public function getPaymentMethod($type)
+    {
+        return self::PAYMENT_METHOD[$type] ?? '';
     }
 
     public function scopeOfUser($query, $id)

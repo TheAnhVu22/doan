@@ -73,6 +73,7 @@ Route::prefix('/admin')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('update-fee', [ShippingController::class, 'updateFee'])->name('shipping.update_fee');
+        Route::post('confirm-order', [OrderController::class, 'confirmOrder'])->name('order.confirm_order');
 
         Route::resource('categories', CategoryProductController::class, ['names' => 'category_product'])->parameters(['categories' => 'categoryProduct']);
         Route::resource('brands', BrandProductController::class, ['names' => 'brand'])->parameters(['brands' => 'brand']);

@@ -70,4 +70,9 @@ abstract class BaseRepository
     {
         return $this->model->with($relation)->paginate($page);
     }
+
+    public function findWithTrashed(int $id, array $columns = ['*'], array $relation = [])
+    {
+        return $this->model->with($relation)->withTrashed()->findOrFail($id, $columns);
+    }
 }

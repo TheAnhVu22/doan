@@ -1,19 +1,19 @@
-@extends('user.commons.layout')
+@extends('adminlte::page')
 
-@section('title', 'ATVSHOP')
+@section('title', 'Order')
 
-@push('css')
-@endpush
+@section('content_header')
+    <h1>Chi tiết đơn đặt hàng: Mã đơn ({{ $order->order_code }})</h1>
+@stop
 
 @section('content')
-    <div class="container mt-5">
-        <h3>Chi tiết đơn đặt hàng: Mã đơn ({{ $order->order_code }})</h3>
-        <p><b>Tên khách hàng: </b>{{ $order->shipping?->shipping_name }}</p>
-        <p><b>Số điện thoại: </b>{{ $order->shipping?->shipping_phone }}</p>
-        <p><b>Địa chỉ: </b>{{ $order->shipping?->shipping_address }}</p>
-        <p><b>Phương thức thanh toán: </b>{{ $order->getPaymentMethod($order->shipping?->payment_method) }}</p>
-        <p><b>Trạng thái đơn hàng: </b>{{ $order->getStatusOrder($order->status) }}</p>
-        <p><b>Ghi chú: </b>{{ $order->shipping?->note }}</p>
+    <div class="container-fluid">
+        <h6><b>Tên khách hàng: </b>{{ $order->shipping?->shipping_name }}</h6>
+        <h6><b>Số điện thoại: </b>{{ $order->shipping?->shipping_phone }}</h6>
+        <h6><b>Địa chỉ: </b>{{ $order->shipping?->shipping_address }}</h6>
+        <h6><b>Phương thức thanh toán: </b>{{ $order->getPaymentMethod($order->shipping?->payment_method) }}</h6>
+        <h6><b>Trạng thái đơn hàng: </b>{{ $order->getStatusOrder($order->status) }}</h6>
+        <h6><b>Ghi chú: </b>{{ $order->shipping?->note }}</h6>
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">
                 <tr class="header-table">
@@ -57,7 +57,7 @@
                         <p>Phí vận chuyển: {{ number_format($order->fee_ship, 0, ',', '.') }} đ</p>
                         @if ($order->coupon)
                             @php
-                                $discount = $order->coupon?->type === 1 ? $totalPrice * (($order->coupon?->value) / 100) : $totalPrice - $order->coupon?->value;
+                                $discount = $order->coupon?->type === 1 ? $totalPrice * ($order->coupon?->value / 100) : $totalPrice - $order->coupon?->value;
                                 $finalTotalPrice -= $discount;
                             @endphp
                             <p>Số tiền giảm (mã giảm giá): {{ number_format($discount, 0, ',', '.') }} đ</p>
@@ -71,5 +71,6 @@
                 </tr>
             </tbody>
         </table>
+        <a href="{{ route('order.index') }}" class="btn btn-primary">Quay Lại</a>
     </div>
 @stop
