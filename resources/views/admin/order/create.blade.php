@@ -1,6 +1,10 @@
-@extends('user.commons.layout')
+@extends('adminlte::page')
 
-@section('title', 'ATVSHOP')
+@section('title', 'Order')
+
+@section('content_header')
+    <h1>Quản lý đơn hàng</h1>
+@stop
 
 @push('css')
     <style>
@@ -40,22 +44,106 @@
 @endpush
 
 @section('content')
-    <div class="container mt-5">
-        <h3>Giỏ hàng</h3>
-        <div id="show_cart">
-            @include('user.checkout.table_cart')
-        </div>
+    <div class="container-fluid">
+        @include('admin.layouts.alert')
+        <form action="{{ route('order.store') }}" method="post">
+            @csrf
+            @include('admin.order._form')
+        </form>
     </div>
 @stop
 
 @push('js')
+    <script src="{{ asset('js/shipping.js') }}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\OrderStoreRequest') !!}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>s
     <script>
         $(function() {
+            $(document).on('change', '.ward_id', function() {
+                const city = $('#city').val();
+                const district = $('#district').val();
+                const ward = $('#ward').val();
+                const url = $('#url_fee_ship').val();
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        city: city,
+                        district: district,
+                        ward: ward,
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            console.log(data.error);
+                        } else {
+                            $('#list_product').html(data);
+                        }
+                    }
+                });
+            })
+
+            $('#btn_search').click(function() {
+                let keyword = $('#keyword').val();
+                const url = $('#url_search').val();
+                keywords = keyword ?? 'all';
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        keywords: keywords
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: data.error,
+                            })
+                        } else {
+                            $('#all_product').html(data);
+                        }
+                    }
+                });
+            })
+
+            $(document).on('click', '#btn_add_product', function() {
+                const product_id = $(this).data('product_id');
+                const feeShip = $('#feeShip').val();
+                const url = $('#url_add').val();
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        product_id: product_id,
+                        feeShip: feeShip
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: data.error,
+                            })
+                        } else {
+                            $('#list_product').html(data);
+                        }
+                    }
+                });
+            })
+
             $(document).on('click', '.btn_remove_product', function() {
                 const url = $(this).data('url');
                 const product = $(this).data('product');
+                const feeShip = $('#feeShip').val();
                 Swal.fire({
-                    title: 'Bạn có chắc muốn xóa sản phẩm khỏi giỏ hàng không?',
+                    title: 'Bạn có chắc muốn xóa sản phẩm khỏi đơn hàng không?',
                     showCancelButton: true,
                     confirmButtonText: 'Xóa',
                     confirmButtonClass: "btn-success",
@@ -70,7 +158,8 @@
                                     'content'),
                             },
                             data: {
-                                product: product
+                                product: product,
+                                feeShip: feeShip
                             },
                             success: function(data) {
                                 if (data.error) {
@@ -79,19 +168,18 @@
                                         text: data.error,
                                     })
                                 } else {
-                                    $('#show_cart').html(data);
+                                    $('#list_product').html(data);
                                 }
                             }
                         });
                     }
                 })
-
             })
 
             function updateQuantity(product, product_quantity) {
-                const sales_quantity = $('.product_qty_' + product).val();
-                const quantity = product_quantity
+                const quantity = $('.product_qty_' + product).val();
                 const url = $('#update_quantity').val();
+                const feeShip = $('#feeShip').val();
                 $.ajax({
                     url: url,
                     method: 'POST',
@@ -101,7 +189,8 @@
                     data: {
                         product: product,
                         quantity: quantity,
-                        sales_quantity: sales_quantity
+                        feeShip: feeShip,
+                        product_quantity: product_quantity
                     },
                     success: function(data) {
                         if (data.error) {
@@ -110,7 +199,7 @@
                                 text: data.error,
                             })
                         } else {
-                            $('#show_cart').html(data);
+                            $('#list_product').html(data);
                         }
                     }
                 });

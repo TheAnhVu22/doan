@@ -32,14 +32,18 @@
                                 $totalPrice += $orderDetail->price * $orderDetail->sales_quantity;
                             @endphp
                         @endforeach
+                        @php
+                            $totalPrice -= $order->coupon_id ? ($order->coupon->type == 1 ? $totalPrice * ($order->coupon->value / 100) : $order->coupon->value) : 0;
+                        @endphp
                         <tr>
                             <td>{{ $order->id }}</td>
-                            <td>{{ number_format($totalPrice, 0, ',', '.') }}đ</td>
+                            <td>{{ number_format($totalPrice + $order->fee_ship, 0, ',', '.') }}đ</td>
                             <td>{{ $order->created_at }}</td>
                             <td>{{ $order->getStatusOrder($order->status) }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <a href="{{ route('detail_order', ['order' => $order->order_code]) }}" class="btn btn-primary m-1">Xem chi tiết</a>
+                                    <a href="{{ route('detail_order', ['order' => $order->order_code]) }}"
+                                        class="btn btn-primary m-1">Xem chi tiết</a>
                                     @if ($order->status === \App\Models\Order::STATUS_NEW)
                                         <button type="button" class="btn btn-danger m-1 btnCancelOrder"
                                             data-id={{ $order->order_code }} data-url={{ route('cancel_order') }}>

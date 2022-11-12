@@ -56,7 +56,8 @@ class CheckoutController extends Controller
             $request->all(),
             [
                 'product' => 'required|string|max:5',
-                'quantity' => 'required|integer|gt:0|max:5'
+                'quantity' => 'required|integer|gt:0',
+                'sales_quantity' => 'required|gt:0|max:' . $request->quantity
             ]
         );
 
@@ -136,16 +137,18 @@ class CheckoutController extends Controller
 
         if ($validator->passes()) {
             $coupon = $this->checkoutService->applyCoupon($request->all());
-            if ($coupon !== false) {
+            if ($coupon === 1) {
+                return response()->json(['error' => ['Mã giảm giá chỉ được dùng 1 lần!']]);
+            } else if ($coupon === 2) {
+                return response()->json(['error' => ['Mã giảm giá không đúng']]);
+            } else {
                 $discount = $coupon['coupon_type'] == '1'
                     ? ($request['total'] * ($coupon['coupon_value'] / 100))
-                    : ($request['total'] - $coupon['coupon_value']);
+                    : ($coupon['coupon_value']);
                 $feeShip = $request->feeShip;
                 $couponCode = $coupon['coupon_code'];
                 $carts = \Session::get('cart');
                 return view('user.checkout.table_checkout', compact('feeShip', 'carts', 'discount', 'couponCode'));
-            } else {
-                return response()->json(['error' => 'Mã giảm giá không đúng!']);
             }
         }
 

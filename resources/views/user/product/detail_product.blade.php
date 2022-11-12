@@ -92,7 +92,7 @@
                                 <span class="minus">-</span>
                                 <input type="text" class="product_qty_{{ $product->id }}" id="getQuantity"
                                     name="quantity" value="1" onkeydown="return false;" />
-                                <span class="plus">+</span>
+                                <span class="plus" data-quantity="{{ $product->quantity }}">+</span>
                             </div>
 
                             <input type="hidden" value="{{ $product->id }}" class="product_id_{{ $product->id }}">
@@ -219,12 +219,12 @@
                 if (parseInt(product_qty) > parseInt(product_quantity)) {
                     Swal.fire({
                         icon: 'error',
-                        text: 'Làm ơn đặt nhỏ hơn ' + product_qty,
+                        text: 'Làm ơn đặt nhỏ hơn ' + product_quantity,
                     })
-                } else if (parseInt(product_qty) > 9) {
+                } else if (parseInt(product_qty) > 5) {
                     Swal.fire({
                         icon: 'error',
-                        text: 'Làm ơn đặt nhỏ hơn 10',
+                        text: 'Làm ơn đặt nhỏ hơn 5',
                     })
                 } else {
                     $.ajax({

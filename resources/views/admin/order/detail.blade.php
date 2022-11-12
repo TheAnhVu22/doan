@@ -12,7 +12,11 @@
         <h6><b>Số điện thoại: </b>{{ $order->shipping?->shipping_phone }}</h6>
         <h6><b>Địa chỉ: </b>{{ $order->shipping?->shipping_address }}</h6>
         <h6><b>Phương thức thanh toán: </b>{{ $order->getPaymentMethod($order->shipping?->payment_method) }}</h6>
-        <h6><b>Trạng thái đơn hàng: </b>{{ $order->getStatusOrder($order->status) }}</h6>
+        <h6><b>Trạng thái đơn hàng: </b>{{ $order->deleted_at ? 'Đã hủy' : $order->getStatusOrder($order->status) }}</h6>
+        <h6><b>Ngày đặt: </b>{{ $order->created_at }}</h6>
+        @if ($order->deleted_at)
+            <h6><b>Ngày hủy: </b>{{ $order->deleted_at }}</h6>
+        @endif
         <h6><b>Ghi chú: </b>{{ $order->shipping?->note }}</h6>
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">

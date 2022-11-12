@@ -9,6 +9,7 @@ use App\Models\District;
 use App\Models\FeeShip;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use App\Models\Shipping;
 use App\Models\Ward;
 use Exception;
@@ -21,6 +22,7 @@ class CheckoutService
     {
         DB::beginTransaction();
         try {
+            $product = Product::find($request['product_id']);
             $session_id = substr(md5(microtime()), rand(0, 26), 5);
             $cart = \Session::get('cart');
             if ($cart == true) {
@@ -37,7 +39,7 @@ class CheckoutService
                         'product_id' => $request['product_id'],
                         'product_name' => $request['product_name'],
                         'product_image' => $request['product_image'],
-                        'product_price' => $request['product_price'],
+                        'product_price' => $product->price * (1 - (($product->discount) / 100)),
                         'product_quantity' => $request['product_quantity'],
                         'product_qty' => $request['product_qty'],
                     );
@@ -51,8 +53,7 @@ class CheckoutService
                     'product_image' => $request['product_image'],
                     'product_quantity' => $request['product_quantity'],
                     'product_qty' => $request['product_qty'],
-                    'product_price' => $request['product_price'],
-
+                    'product_price' => $product->price * (1 - (($product->discount) / 100))
                 );
                 \Session::put('cart', $cart);
             }
@@ -95,7 +96,7 @@ class CheckoutService
             if ($cart == true) {
                 foreach ($cart as $key => $product) {
                     if ($product['session_id'] == $request['product']) {
-                        $cart[$key]['product_qty'] = $request['quantity'];
+                        $cart[$key]['product_qty'] = $request['sales_quantity'];
                     }
                 }
                 \Session::put('cart', $cart);
@@ -119,21 +120,27 @@ class CheckoutService
             $coupon = Coupon::where('code', $request['code'])->whereDate('start_date', '<=', $now)
                 ->whereDate('end_date', '>=', $now)->where('quantity', '>', 0)->first();
             if ($coupon) {
-                $coupon_code = array(
-                    'coupon_code' => $coupon->code,
-                    'coupon_type' => $coupon->type,
-                    'coupon_value' => $coupon->value,
-                );
-                \Session::put('coupon', $coupon_code);
+                $isCouponUsed = Order::where('user_id', \Auth::guard('user')->user()->id)
+                    ->where('coupon_id', $coupon->id)->first();
+                if (!$isCouponUsed) {
+                    $coupon_code = array(
+                        'coupon_code' => $coupon->code,
+                        'coupon_type' => $coupon->type,
+                        'coupon_value' => $coupon->value,
+                    );
+                    \Session::put('coupon', $coupon_code);
+                } else {
+                    return 1;
+                }
             } else {
-                return false;
+                return 2;
             }
         } catch (Exception $e) {
             DB::rollBack();
             return back()->withErrors($e->getMessage())->withInput();
         }
         DB::commit();
-        return \Session::get('coupon') ?? false;
+        return \Session::get('coupon') ?? 2;
     }
 
     public function applyFeeship($request)
@@ -190,12 +197,19 @@ class CheckoutService
 
             if (\Session::get('cart') == true) {
                 foreach (\Session::get('cart') as $key => $cart) {
+                    $pro = Product::find($cart['product_id']);
+                    if ($pro->quantity < $cart['product_qty']) {
+                        return false;
+                    }
                     $order_details = new OrderDetail();
                     $order_details->order_id = $order->id;
                     $order_details->product_id = $cart['product_id'];
                     $order_details->price = $cart['product_price'];
                     $order_details->sales_quantity = $cart['product_qty'];
                     $order_details->save();
+
+                    $pro->decrement('quantity', $cart['product_qty']);
+                    $pro->save();
                 }
             }
 
@@ -224,7 +238,8 @@ class CheckoutService
             if ($order) {
 
                 $shipping = $order->shipping;
-
+                $order->coupon->increment('quantity');
+                $order->coupon->save();
                 $order->orderDetails()->delete();
                 $order->delete();
 

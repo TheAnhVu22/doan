@@ -13,6 +13,7 @@
         <p><b>Địa chỉ: </b>{{ $order->shipping?->shipping_address }}</p>
         <p><b>Phương thức thanh toán: </b>{{ $order->getPaymentMethod($order->shipping?->payment_method) }}</p>
         <p><b>Trạng thái đơn hàng: </b>{{ $order->getStatusOrder($order->status) }}</p>
+        <h6><b>Ngày đặt: </b>{{ $order->created_at }}</h6>
         <p><b>Ghi chú: </b>{{ $order->shipping?->note }}</p>
         <table class="table table-bordered table-hover">
             <thead class="thead-dark">

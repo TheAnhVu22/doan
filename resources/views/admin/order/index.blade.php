@@ -41,24 +41,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $totalPrice = 0;
-                    @endphp
                     @forelse ($orders as $order)
+                        @php
+                            $totalPrice = 0;
+                        @endphp
                         @foreach ($order->orderDetails as $orderDetail)
                             @php
                                 $totalPrice += $orderDetail->price * $orderDetail->sales_quantity;
                             @endphp
                         @endforeach
+                        @php
+                            $totalPrice -= $order->coupon_id ? ($order->coupon->type == 1 ? $totalPrice * ($order->coupon->value / 100) : $order->coupon) : 0;
+                        @endphp
                         <tr>
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->order_code }}</td>
-                            <td>{{ $order->user?->name }}</td>
+                            <td>{{ $order->shipping->shipping_name }}</td>
                             <td>{{ \Carbon\Carbon::parse($order->create_dt)->format('Y/m/d h:i:s') }}</td>
-                            <td>{{ number_format($totalPrice, 0, ',', '.') }}đ</td>
+                            <td>{{ number_format($totalPrice + $order->fee_ship, 0, ',', '.') }}đ</td>
                             <td>{{ $order->deleted_at ? 'Đã hủy' : $order->getStatusOrder($order->status) }}</td>
                             <td>
-                                @if (!($order->deleted_at) && $order->status === \App\Models\Order::STATUS_NEW)
+                                @if (!$order->deleted_at && $order->status === \App\Models\Order::STATUS_NEW)
                                     <form action="{{ route('order.confirm_order') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="order_code" value="{{ $order->order_code }}">
@@ -71,12 +74,14 @@
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <a href="{{ route('order.show', ['order' => $order]) }}"
-                                        class="btn btn-primary m-1">Xem
+                                        class="btn btn-secondary m-1">Xem
                                         chi tiết</a>
                                     @if (!request()->get('isDeleted'))
-                                        <a href="{{ route('order.edit', ['order' => $order]) }}"
-                                            class="btn btn-primary m-1">Cập
-                                            nhật</a>
+                                        @if ($order->status !== \App\Models\Order::STATUS_COMPLETED)
+                                            <a href="{{ route('order.edit', ['order' => $order]) }}"
+                                                class="btn btn-primary m-1">Cập
+                                                nhật</a>
+                                        @endif
                                         @if ($order->status === \App\Models\Order::STATUS_NEW)
                                             <button class="btn btn-danger m-1 btnDelete" data-toggle="modal"
                                                 data-target="#modalDelete"

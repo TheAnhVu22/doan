@@ -1,18 +1,20 @@
 $(function() {
     $('.minus').click(function() {
-        let $input = $(this).parent().find('input');
-        let count = parseInt($input.val()) - 1;
+        let input = $(this).parent().find('input');
+        let count = parseInt(input.val()) - 1;
         count = count < 1 ? 1 : count;
-        $input.val(count);
-        $input.change();
+        input.val(count);
         return false;
     });
 
     $('.plus').click(function() {
-        let $input = $(this).parent().find('input');
-        let count = parseInt($input.val());
-        count = count < 5 ? (count + 1) : count;
-        $input.val(count);
+        let input = $(this).parent().find('input');
+        let count = parseInt(input.val());
+        const quantity = $(this).data('quantity');
+        if(count < quantity && count < 5){
+            count = count + 1;
+            input.val(count);
+        }
     });
 
     $('#imageGallery').lightSlider({

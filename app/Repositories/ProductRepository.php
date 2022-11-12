@@ -201,4 +201,9 @@ class ProductRepository extends BaseRepository
     {
         return $this->model->latest()->paginate(12);
     }
+
+    public function getAll()
+    {
+        return $this->model->ofIsActive()->where('quantity', '>=', 1)->get();
+    }
 }

@@ -72,8 +72,14 @@ Route::prefix('/admin')->group(function () {
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::post('statistical', [DashboardController::class, 'statistical'])->name('statistical');
         Route::post('update-fee', [ShippingController::class, 'updateFee'])->name('shipping.update_fee');
         Route::post('confirm-order', [OrderController::class, 'confirmOrder'])->name('order.confirm_order');
+        Route::post('/apply-feeship-admin', [OrderController::class, 'applyFeeshipAdmin'])->name('apply_feeship_admin');
+        Route::post('/search-product', [OrderController::class, 'searchProductModal'])->name('admin_order_search_modal');
+        Route::post('/add-product-order', [OrderController::class, 'addProductOrder'])->name('add_product_order');
+        Route::post('/remove-product-admin-cart', [OrderController::class, 'removeProductAdminCart'])->name('remove_product_admin_cart');
+        Route::post('/update-quantity-order', [OrderController::class, 'updateQuantityOrder'])->name('update_quantity_order');
 
         Route::resource('categories', CategoryProductController::class, ['names' => 'category_product'])->parameters(['categories' => 'categoryProduct']);
         Route::resource('brands', BrandProductController::class, ['names' => 'brand'])->parameters(['brands' => 'brand']);

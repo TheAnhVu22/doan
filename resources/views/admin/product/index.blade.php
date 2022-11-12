@@ -38,7 +38,7 @@
                             <td class="text-center">
                                 <a href="{{ route('product.show', ['product' => $product]) }}" class="btn btn-sm btn-primary">Quản lý ảnh</a>
                             </td>
-                            <td>{{ $product->price }}</td>
+                            <td>{{ number_format($product->price, 0, ',', '.') }}</td>
                             <td>{{ $product->discount ?? 0 }}%</td>
                             <td>{{ $product->quantity }}</td>
                             <td>{{ $product->views ?? 0 }}</td>
