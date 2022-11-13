@@ -27,12 +27,6 @@
                         </div>
             
                         <div class="form-group">
-                            <label for="email">Địa Chỉ Email:</label><label style="color: red">(*)</label>
-                            <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}"
-                                autocomplete="off">
-                        </div>
-            
-                        <div class="form-group">
                             <label for="phone">Số Điện Thoại:</label><label style="color: red">(*)</label>
                             <input type="number" class="form-control" value="{{ old('phone', $user->phone) }}" name="phone"
                                 autocomplete="off">

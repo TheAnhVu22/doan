@@ -160,6 +160,8 @@ class ProductRepository extends BaseRepository
     {
         $products = $this->model->join('brand_products', 'products.brand_id', '=', 'brand_products.id')
             ->join('category_products', 'products.category_id', '=', 'category_products.id')
+            ->leftJoin('product_tags', 'products.id', '=', 'product_tags.product_id')
+            ->leftJoin('tags', 'product_tags.tag_id', '=', 'tags.id')
             ->where(function ($query) use ($request) {
                 $query->where(function ($query) use ($request) {
                     $query->where('products.name', 'LIKE', '%' . $request['keywords'] . '%')
@@ -172,6 +174,9 @@ class ProductRepository extends BaseRepository
                     ->orWhere(function ($query) use ($request) {
                         $query->where('brand_products.name', 'LIKE', '%' .  $request['keywords'] . '%')
                             ->where('brand_products.is_active', 1);
+                    })
+                    ->orWhere(function ($query) use ($request) {
+                        $query->where('tags.name', 'LIKE', '%' .  $request['keywords'] . '%');
                     });
             });
 
@@ -179,7 +184,7 @@ class ProductRepository extends BaseRepository
             $this->querySearchProduct($products, $request);
         });
 
-        return $products->select('products.*')->paginate(12);
+        return $products->select('products.*')->distinct()->paginate(12);
     }
 
     public function search(string $key, string $column, array $relation = [])

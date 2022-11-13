@@ -20,10 +20,7 @@ class UserUpdateRequest extends UserStoreRequest
         }
 
         $rules['email'] = [
-            'required',
-            'max:255',
-            'email',
-            Rule::unique('users')->ignore($this->user),
+            'prohibited'
         ];
 
         return $rules;

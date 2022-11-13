@@ -130,7 +130,9 @@
                 @endforelse
 
                 <br>
-                {{ $products->withQueryString()->links('pagination::bootstrap-4') }}
+                @if (!empty($products))
+                    {{ $products->withQueryString()->links('pagination::bootstrap-4') }}
+                @endif
             </div>
         </div>
     </div>

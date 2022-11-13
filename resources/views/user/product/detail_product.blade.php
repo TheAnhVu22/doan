@@ -113,7 +113,8 @@
                     <div class="mb-2">
                         <p>Từ khóa:</p>
                         @foreach ($product->tags as $tag)
-                            <a href="#" class="badge badge-info p-2">{{ $tag->name }}</a>
+                            <a href="{{ route('search_product', ['keywords' => $tag->name]) }}"
+                                class="badge badge-info p-2">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 </div>
@@ -257,7 +258,7 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.href = "{{ url('/carts') }}";
-                                    } 
+                                    }
                                 })
                                 // count_cart();
                                 // giohang_hover();
