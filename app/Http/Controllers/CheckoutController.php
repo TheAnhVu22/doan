@@ -97,6 +97,9 @@ class CheckoutController extends Controller
     public function checkoutForm(Request $request)
     {
         $carts = \Session::get('cart');
+        if (!$carts) {
+            return redirect()->route('cart.index');
+        }
         $cities = City::all();
         $districts = [];
         $wards = [];

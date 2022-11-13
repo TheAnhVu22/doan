@@ -34,7 +34,7 @@ class UserLoginController extends Controller
             'password' => 'required|max:255'
         ]);
         if (Auth::guard('user')->attempt($credentials)) {
-            return redirect()->route('homepage');
+            return redirect()->intended('/');
         } else {
             return redirect()->route('user_login')->withErrors('Tên Đăng Nhập Hoặc Mật Khẩu Sai');
         }
