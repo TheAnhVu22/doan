@@ -70,7 +70,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('login', [LoginController::class, 'Login'])->name('login');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::middleware('auth:admin')->group(function () {
+    Route::middleware('auth:admin', 'authz')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('statistical', [DashboardController::class, 'statistical'])->name('statistical');
         Route::post('update-fee', [ShippingController::class, 'updateFee'])->name('shipping.update_fee');
@@ -94,14 +94,14 @@ Route::prefix('/admin')->group(function () {
         Route::resource('tags', TagsController::class, ['names' => 'tag'])->parameters(['tags' => 'tag']);
         Route::resource('shippings', ShippingController::class, ['names' => 'shipping'])->parameters(['shippings' => 'shipping']);
         Route::resource('slides', SlideController::class, ['names' => 'slide'])->parameters(['slides' => 'slide']);
+
+
+        Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
+
+        Route::post('select_gallery', [ProductImageController::class, 'select_gallery'])->name('select_gallery');
+        Route::post('insert_gallery/{project}', [ProductImageController::class, 'insert_gallery'])->name('insert_gallery');
+        Route::post('update_name', [ProductImageController::class, 'update_name'])->name('update_name');
+        Route::post('delete_image', [ProductImageController::class, 'delete_image'])->name('delete_image');
+        Route::post('update_gallery', [ProductImageController::class, 'update_gallery'])->name('update_gallery');
     });
 });
-
-Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
-
-Route::post('select_gallery', [ProductImageController::class, 'select_gallery'])->name('select_gallery');
-Route::post('insert_gallery/{project}', [ProductImageController::class, 'insert_gallery'])->name('insert_gallery');
-Route::post('update_name', [ProductImageController::class, 'update_name'])->name('update_name');
-Route::post('delete_image', [ProductImageController::class, 'delete_image'])->name('delete_image');
-Route::post('update_gallery', [ProductImageController::class, 'update_gallery'])->name('update_gallery');
-// Route::resource('cart', CartController::class);

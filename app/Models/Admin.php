@@ -44,6 +44,13 @@ class Admin extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
+    public function hasAbility(string $ability): bool
+    {
+        $abilities = config('abilities.' . $this->role_id, []);
+
+        return in_array($ability, $abilities);
+    }
+
     // public function isAdmin() { 
     //     return $this->role_id == self::ADMIN_ROLE;
     // }
