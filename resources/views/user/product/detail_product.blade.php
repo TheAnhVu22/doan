@@ -12,9 +12,13 @@
     <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/product_detail.css') }}">
     <style>
-        ul.lSGallery li,
+        ul.lSGallery li {
+            height: 70px;
+        }
+
         ul.lSGallery li img {
             height: 70px;
+            border: 1px solid;
         }
 
         .img-hover-zoom img {
@@ -58,7 +62,7 @@
                         @foreach ($product->productImages as $key => $image)
                             <li data-thumb="{{ asset('uploads/product_images/' . $image->image) }}"
                                 data-src="{{ asset('uploads/product_images/' . $image->image) }}">
-                                <img height="300" width="100%"
+                                <img height="300" width="100%" class=" border border-dark"
                                     src="{{ asset('uploads/product_images/' . $image->image) }}" />
                             </li>
                         @endforeach
