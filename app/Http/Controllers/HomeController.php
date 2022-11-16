@@ -18,11 +18,6 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-
     protected $brandRepo;
     protected $cateProductRepo;
     protected $catePostRepo;
@@ -116,6 +111,11 @@ class HomeController extends Controller
         $news->increment('views');
         $relate_news = $this->postRepo->getRelateNews($news);
         return view('user.news.detail_news', compact('news', 'relate_news'));
+    }
+
+    public function contact()
+    {
+        return view('user.contact.index');
     }
 
     public function managerAccount(User $user)

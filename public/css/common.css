@@ -2,6 +2,12 @@ header {
     min-height: 50px;
 }
 
+@media (max-width: 500px) {
+    #header_top {
+        display: none !important;
+    }
+}
+
 .header_top {
     padding: 5px;
     background: rgb(11, 115, 241);

@@ -43,6 +43,7 @@ Route::get('/products/{slug}', [HomeController::class, 'getProductDetail'])->nam
 Route::get('/category-news', [HomeController::class, 'getNews'])->name('show_list_news');
 Route::get('/news/{slug}', [HomeController::class, 'getNewsDetail'])->name('news_detail');
 Route::get('/search-product', [HomeController::class, 'search'])->name('search_product');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/rating', [HomeController::class, 'rating'])->name('rating');
 Route::post('/comment', [HomeController::class, 'comment'])->name('comment');
 Route::post('/count-cart', [HomeController::class, 'countCart'])->name('count_cart');

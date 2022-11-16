@@ -25,7 +25,7 @@
             <p class="mx-3"><i class="fas fa-eye"></i> {{ $news->views }}</p>
         </div>
         <div id="content-news">
-            <div class="card-body">
+            <div class="card-body text-left bg-white">
                 {!! $news->description !!}
             </div>
         </div>

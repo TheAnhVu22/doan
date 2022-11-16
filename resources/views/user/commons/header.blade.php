@@ -3,13 +3,13 @@
         <div class="d-flex justify-content-around" id="header_top">
             <p href="#"><i class="fa fa-phone"></i><span class="text-nowrap"> 0374667xxx</span></p>
             <p href="#"><i class="fa fa-envelope"></i><span class="text-nowrap"> anhxx@gmail.com</span></p>
-            <p href="#"><i class="fas fa-truck"></i><span class="text-nowrap"> Toàn quốc</span></p>
-            <p href="#"><i class="far fa-calendar-alt"></i><span class="text-nowrap"> Thứ 2 - Thứ 7</span></p>
+            <p href="#"><i class="fas fa-truck"></i><span class="text-nowrap"> Vận chuyển toàn quốc</span></p>
+            <a href="{{ route('contact') }}" class="text-white"><i class="fas fa-info"></i><span class="text-nowrap"> Liên hệ</span></a>
         </div>
     </div>
 </div>
 <div id="menu">
-    <nav class="container navbar navbar-expand-sm navbar-light" id="navbar">
+    <nav class="container navbar navbar-expand-md navbar-light" id="navbar">
         <a href="{{ route('homepage') }}" class="navbar-brand">ATVSHOP</a>
         <button class="navbar-toggler navbar-brand" data-target=".my-nav" data-toggle="collapse" aria-controls="my-nav"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
             </ul>
         </div>
     </nav>
-    <nav class="container navbar navbar-expand-sm navbar-light" id="navbar">
+    <nav class="container navbar navbar-expand-md navbar-light" id="navbar">
         <div id="my-nav" class="collapse navbar-collapse my-nav">
             <ul class="navbar-nav mr-auto menu-product">
                 <li class="nav-item">
