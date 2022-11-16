@@ -23,7 +23,7 @@
     <header>
         @include('user.commons.header')
     </header>
-
+    <input type="hidden" id="url_count_cart" value="{{ route('count_cart') }}">
 
     @yield('content')
 
@@ -50,6 +50,8 @@
             }
         });
     </script>
+
+    <script src="{{ asset('js/cart.js') }}"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('js')

@@ -30,7 +30,9 @@
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     <a href="{{ route('cart.index') }}" class="mr-1s"><i class="fas fa-shopping-cart"></i> <span
-                            class="text-nowrap">Giỏ hàng</span></a>
+                            class="text-nowrap">Giỏ hàng</span>
+                        <span id="count_cart" class="badge badge-pill badge-danger"></span>
+                    </a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
                     @if (Auth::guard('user')->check())

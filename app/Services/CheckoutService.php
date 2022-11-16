@@ -27,8 +27,8 @@ class CheckoutService
             $cart = \Session::get('cart');
             if ($cart == true) {
                 $isProductNotInCart = true;
-                foreach ($cart as $product) {
-                    if ($product['product_id'] === $request['product_id']) {
+                foreach ($cart as $productCart) {
+                    if ($productCart['product_id'] === $request['product_id']) {
                         $isProductNotInCart = false;
                         break;
                     }

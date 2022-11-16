@@ -45,6 +45,7 @@ Route::get('/news/{slug}', [HomeController::class, 'getNewsDetail'])->name('news
 Route::get('/search-product', [HomeController::class, 'search'])->name('search_product');
 Route::post('/rating', [HomeController::class, 'rating'])->name('rating');
 Route::post('/comment', [HomeController::class, 'comment'])->name('comment');
+Route::post('/count-cart', [HomeController::class, 'countCart'])->name('count_cart');
 
 Route::get('/carts', [CheckoutController::class, 'showCart'])->name('cart.index');
 Route::post('/add-product-to-cart', [CheckoutController::class, 'addProductToCard'])->name('add_product_to_cart');

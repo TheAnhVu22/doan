@@ -51,6 +51,25 @@
 @push('js')
     <script>
         $(function() {
+            function count_cart() {
+                const url = $('#url_count_cart').val();
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {},
+                    success: function(data) {
+                        if (data == 0) {
+                            $('#count_cart').html('');
+                        } else {
+                            $('#count_cart').html(data);
+                        }
+                    }
+                });
+            }
+
             $(document).on('click', '.btn_remove_product', function() {
                 const url = $(this).data('url');
                 const product = $(this).data('product');
@@ -79,6 +98,7 @@
                                         text: data.error,
                                     })
                                 } else {
+                                    count_cart();
                                     $('#show_cart').html(data);
                                 }
                             }

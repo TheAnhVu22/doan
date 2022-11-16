@@ -213,4 +213,13 @@ class HomeController extends Controller
         }
         return view('user.auth.detail_order', compact('order'));
     }
+
+    public function countCart()
+    {
+        $carts = \Session::get('cart');
+        if ($carts) {
+            return count($carts);
+        }
+        return 0;
+    }
 }

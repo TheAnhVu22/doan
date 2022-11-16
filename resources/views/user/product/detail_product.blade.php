@@ -207,6 +207,26 @@
 
     <script type="text/javascript">
         $(function() {
+
+            function count_cart() {
+                const url = $('#url_count_cart').val();
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {},
+                    success: function(data) {
+                        if (data == 0) {
+                            $('#count_cart').html('');
+                        } else {
+                            $('#count_cart').html(data);
+                        }
+                    }
+                });
+            }
+
             var rating = 0;
             $('.add-to-cart').click(function() {
                 const id = $(this).data('product_id');
@@ -260,8 +280,7 @@
                                         window.location.href = "{{ url('/carts') }}";
                                     }
                                 })
-                                // count_cart();
-                                // giohang_hover();
+                                count_cart();
                             }
                         }
                     });
