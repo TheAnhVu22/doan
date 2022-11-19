@@ -10,7 +10,6 @@
 @endpush
 
 @section('content')
-
     <div class="container">
         @include('user.commons.banner')
 

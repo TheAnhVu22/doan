@@ -157,3 +157,7 @@ a.card {
 tr td {
     text-align: center !important;
 }
+
+.card.new_product {
+    height: 100%;
+}
