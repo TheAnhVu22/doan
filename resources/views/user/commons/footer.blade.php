@@ -5,7 +5,7 @@
                 <a id="button-scroll-top"></a>
                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto my-4">
                     <h6 class="text-uppercase fw-bold mb-4">
-                        <i class="fas fa-gem me-3 text-secondary"></i> Thông tin cửa hàng
+                        Thông tin cửa hàng
                     </h6>
                     <p>
                         Cửa hàng ATV chuyên bán điện thoại, máy tính, đồ điện tử chính hãng
@@ -56,8 +56,8 @@
 
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 my-4">
                     <h6 class="text-uppercase fw-bold mb-4">Liên hệ</h6>
-                    <p><i class="fas fa-home me-3 text-secondary"></i> Mễ Trì, Hà Nội, Việt Nam</p>
-                    <p><i class="fas fa-phone me-3 text-secondary"></i> + 0374667xxx</p>
+                    <p><i class="fas fa-home"></i> Mễ Trì, Hà Nội, Việt Nam</p>
+                    <p><i class="fas fa-phone"></i> + 0374667xxx</p>
                     <p><i class="fa fa-envelope"></i> theanhvuxx@gmail.com</p>
                 </div>
 

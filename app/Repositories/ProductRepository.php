@@ -184,7 +184,7 @@ class ProductRepository extends BaseRepository
             $this->querySearchProduct($products, $request);
         });
 
-        return $products->select('products.*')->distinct()->paginate(12);
+        return $products->select('products.*')->distinct('products.id')->paginate(12);
     }
 
     public function search(string $key, string $column, array $relation = [])
