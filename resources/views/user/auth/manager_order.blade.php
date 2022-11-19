@@ -33,7 +33,7 @@
                             @endphp
                         @endforeach
                         @php
-                            $totalPrice -= $order->coupon_id ? ($order->coupon->type == 1 ? $totalPrice * ($order->coupon->value / 100) : $order->coupon->value) : 0;
+                            $totalPrice -= $order->coupon_id ? ($order->coupon?->type == 1 ? $totalPrice * ($order->coupon?->value / 100) : $order->coupon?->value) : 0;
                         @endphp
                         <tr>
                             <td>{{ $order->id }}</td>

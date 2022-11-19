@@ -51,13 +51,13 @@
                             @endphp
                         @endforeach
                         @php
-                            $totalPrice -= $order->coupon_id ? ($order->coupon->type == 1 ? $totalPrice * ($order->coupon->value / 100) : $order->coupon) : 0;
+                            $totalPrice -= $order->coupon_id ? ($order->coupon?->type == 1 ? ($totalPrice * ($order->coupon?->value / 100)) : ($order->coupon?->value)) : 0;
                         @endphp
                         <tr>
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->order_code }}</td>
                             <td>{{ $order->shipping->shipping_name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($order->create_dt)->format('Y/m/d h:i:s') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($order->created_at)->format('Y/m/d h:i:s') }}</td>
                             <td>{{ number_format($totalPrice + $order->fee_ship, 0, ',', '.') }}đ</td>
                             <td>{{ $order->deleted_at ? 'Đã hủy' : $order->getStatusOrder($order->status) }}</td>
                             <td>

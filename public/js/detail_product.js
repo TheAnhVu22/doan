@@ -69,7 +69,7 @@ $(function() {
                             cancelButtonText: "Xem tiếp",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "{{ url('/carts') }}";
+                                window.location.href = "/carts";
                             }
                         })
                         count_cart();
