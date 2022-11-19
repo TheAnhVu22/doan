@@ -24,7 +24,17 @@ class UserLoginController extends Controller
 
     public function showUserLoginForm()
     {
-        return view('user.auth.login');
+        $meta_description = "Đăng nhập ATVSHOP";
+        $meta_title = "Đăng nhập ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.auth.login', compact(
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function userLogin(Request $request)
@@ -42,7 +52,17 @@ class UserLoginController extends Controller
 
     public function showUserRegisterForm()
     {
-        return view('user.auth.register');
+        $meta_description = "Đăng ký tài khoản ATVSHOP";
+        $meta_title = "Đăng ký tài khoản ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.auth.register', compact(
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function userRegister(UserStoreRequest $request)
@@ -69,7 +89,17 @@ class UserLoginController extends Controller
 
     public function forgetPassword()
     {
-        return view('user.auth.forget_password');
+        $meta_description = "Quên mật khẩu ATVSHOP";
+        $meta_title = "Quên mật khẩu ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.auth.forget_password', compact(
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function forgetPasswordHandle(Request $request)
@@ -96,7 +126,17 @@ class UserLoginController extends Controller
 
     public function changePassword()
     {
-        return view('user.auth.change_password');
+        $meta_description = "Đổi mật khẩu ATVSHOP";
+        $meta_title = "Đổi mật khẩu ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.auth.change_password', compact(
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function changePasswordHandle(Request $request)

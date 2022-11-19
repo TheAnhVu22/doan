@@ -5,6 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="{{ $meta_description}}" />
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ $url_canonical }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ $meta_title }}" />
+    <meta property="og:description" content="{{ $meta_description }}" />
+    <meta property="og:image" content="{{ $meta_image }}" />
+    <meta property="og:url" content="{{ $url_canonical }}" />
+    <meta property="og:site_name" content="ATVSHOP" />
+
     <title>@yield('title')</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"

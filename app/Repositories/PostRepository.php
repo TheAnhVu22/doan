@@ -17,7 +17,7 @@ class PostRepository extends BaseRepository
         return new Post();
     }
 
-    public function paginate(int $page = 10, array $relation = [])
+    public function paginate(int $page = 12, array $relation = [])
     {
         return $this->model->with($relation)->ofIsActive()->latest()->paginate($page);
     }
@@ -40,7 +40,7 @@ class PostRepository extends BaseRepository
                 ->orWhere('author_name', 'LIKE', '%' . $request['keyword'] . '%');
         }
 
-        return $news->ofIsActive()->paginate(10);
+        return $news->ofIsActive()->paginate(12);
     }
 
     public function getRelateNews($news)

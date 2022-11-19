@@ -2,9 +2,6 @@
 
 @section('title', 'ATVSHOP')
 
-@push('css')
-@endpush
-
 @section('content')
     <div class="container mt-5">
         <h3>Chi tiết đơn đặt hàng: Mã đơn ({{ $order->order_code }})</h3>
@@ -58,7 +55,7 @@
                         <p>Phí vận chuyển: {{ number_format($order->fee_ship, 0, ',', '.') }} đ</p>
                         @if ($order->coupon)
                             @php
-                                $discount = $order->coupon?->type === 1 ? $totalPrice * (($order->coupon?->value) / 100) : $totalPrice - $order->coupon?->value;
+                                $discount = $order->coupon?->type === 1 ? $totalPrice * ($order->coupon?->value / 100) : $totalPrice - $order->coupon?->value;
                                 $finalTotalPrice -= $discount;
                             @endphp
                             <p>Số tiền giảm (mã giảm giá): {{ number_format($discount, 0, ',', '.') }} đ</p>

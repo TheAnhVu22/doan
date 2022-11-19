@@ -17,7 +17,8 @@ class Product extends BaseModel
         30 => 'Chuột',
         40 => 'Thẻ nhớ',
         50 => 'USB',
-        60 => 'SSD'
+        60 => 'SSD',
+        70 => 'Tai nghe'
     ];
 
     protected $fillable = [

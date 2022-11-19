@@ -19,11 +19,12 @@ $(function() {
 
     $('#imageGallery').lightSlider({
         gallery: true,
+        auto: true,
         item: 1,
         loop: true,
         thumbItem: 3,
         slideMargin: 0,
-        enableDrag: false,
+        enableDrag: true,
         currentPagerPosition: 'left',
         onSliderLoad: function(el) {
             el.lightGallery({

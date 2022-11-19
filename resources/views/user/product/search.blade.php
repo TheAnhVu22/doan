@@ -4,23 +4,7 @@
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
-    <style>
-        .img-product {
-            max-width: 100%;
-            height: 200px;
-            object-fit: fill;
-        }
-
-        .new_product {
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-        }
-
-        .link_product:hover {
-            background-color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/search_product.css') }}">
 @endpush
 
 @section('content')
@@ -89,8 +73,9 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-9 pr-0 text-center d-flex flex-wrap ">
-                @forelse ($products as $product)
+            <div class="col-md-9 pr-0">
+                <div class="text-center d-flex flex-wrap">
+                    @forelse ($products as $product)
                     <a class="col-6 col-sm-4 col-lg-3 mt-3 link_product"
                         href="{{ route('product_detail', ['slug' => $product->slug]) }}">
                         <div class="card new_product">
@@ -128,6 +113,7 @@
                 @empty
                     <h5 class="text-center">Không có sản phẩm nào</h5>
                 @endforelse
+                </div>
 
                 <br>
                 @if (!empty($products))

@@ -2,11 +2,6 @@
 
 @section('title', 'ATVSHOP')
 
-@push('css')
-    <style>
-    </style>
-@endpush
-
 @section('content')
     <div class="container mt-5">
         <h3 class="text-center">

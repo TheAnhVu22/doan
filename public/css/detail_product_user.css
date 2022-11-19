@@ -1,0 +1,26 @@
+ul.lSGallery li img {
+    border: 1px solid;
+}
+
+.img-hover-zoom img {
+    width: inherit;
+}
+
+.rating {
+    cursor: pointer;
+    color: #ccc;
+    font-size: 30px;
+}
+
+.send_evaluate {
+    max-height: 38px;
+}
+
+.scroll {
+    max-height: 600px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.description, .description td {
+    text-align: left !important;
+}

@@ -43,6 +43,11 @@ class HomeController extends Controller
 
     public function index()
     {
+        $meta_description = "Mua bán điện thoại, máy tính, tai nghe, phụ kiện chính hãng";
+        $meta_title = "Điện thoại, máy tính, tai nghe, phụ kiện chính hãng";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         $categories_product = $this->cateProductRepo->all();
         $brands = $this->brandRepo->getBrand();
         $newest_products = $this->productRepo->getProductNewest();
@@ -53,7 +58,22 @@ class HomeController extends Controller
         $watchs = $this->productRepo->getProduct('dong-ho', ['type_sort' => 2, 'notPaginate' => true], 'category');
         $slides = Slide::all('name', 'image');
         $news_discount = $this->postRepo->getPostNewest('khuyen-mai');
-        return view('user.homepage', compact('brands', 'categories_product', 'slides', 'newest_products', 'phones', 'laptops', 'headphones', 'tivis', 'watchs', 'news_discount'));
+        return view('user.homepage', compact(
+            'brands',
+            'categories_product',
+            'slides',
+            'newest_products',
+            'phones',
+            'laptops',
+            'headphones',
+            'tivis',
+            'watchs',
+            'news_discount',
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function getProductByCategory(string $slug = '', Request $request)
@@ -67,7 +87,12 @@ class HomeController extends Controller
         $brandArr = $request->brand_slug ?? [];
         $isCate = true;
 
-        return view('user.product.index', compact('categorySelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr', 'isCate'));
+        $meta_description = "Mua bán " . $categorySelected->name . " chính hãng, giá rẻ.";
+        $meta_title = "Mua bán " . $categorySelected->name . " chính hãng.";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.product.index', compact('categorySelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr', 'isCate', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function getProductByBrand($slug, Request $request)
@@ -80,7 +105,12 @@ class HomeController extends Controller
         $categoryArr = $request->category_slug ?? [];
         $brandArr = $request->brand_slug ?? [];
 
-        return view('user.product.index', compact('brandSelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
+        $meta_description = "Sản phẩm thương hiệu " . $brandSelected->name . " chính hãng, giá rẻ.";
+        $meta_title = "Sản phẩm thương hiệu " . $brandSelected->name . " chính hãng.";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.product.index', compact('brandSelected', 'products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function getProductDetail(string $slug)
@@ -94,15 +124,26 @@ class HomeController extends Controller
         $comments = Comment::where('product_id', $product->id)->whereNull('comment_parent_id')->orderBy('id', 'DESC')->get();
         $comments_response = Comment::where('product_id', $product->id)->whereNotNull('comment_parent_id')->orderBy('id', 'ASC')->get();
 
-        return view('user.product.detail_product', compact('product', 'relate_products', 'rating1', 'rating', 'comments', 'comments_response'));
+        $meta_description = $product->name . " chính hãng, giá rẻ.";
+        $meta_title = $product->name . " chính hãng.";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.product.detail_product', compact('product', 'relate_products', 'rating1', 'rating', 'comments', 'comments_response', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function getNews(Request $request)
     {
         $categories_news = $this->catePostRepo->all();
         $news = !empty($request->all()) ? $this->postRepo->getPostFilter($request->all())
-            : $this->postRepo->paginate();
-        return view('user.news.index', compact('news', 'categories_news'));
+            : $this->postRepo->paginate(12);
+
+        $meta_description = "Tin tức công nghệ, sản phẩm chính xác, nhanh chóng, hữu ích.";
+        $meta_title = "Tin tức công nghệ, sản phẩm chính xác, nhanh chóng, hữu ích.";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.news.index', compact('news', 'categories_news', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function getNewsDetail(string $slug)
@@ -110,29 +151,50 @@ class HomeController extends Controller
         $news = $this->postRepo->search($slug, 'slug');
         $news->increment('views');
         $relate_news = $this->postRepo->getRelateNews($news);
-        return view('user.news.detail_news', compact('news', 'relate_news'));
+
+        $meta_description = $news->name;
+        $meta_title = $news->name;
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.news.detail_news', compact('news', 'relate_news', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function contact()
     {
-        return view('user.contact.index');
+        $meta_description = "ATVSHOP, địa chỉ, liên hệ";
+        $meta_title = "Thông tin ATVSHOP, liên hệ";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.contact.index', compact('meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function managerAccount(User $user)
     {
+        $meta_description = "Tài khoản ATVSHOP";
+        $meta_title = "Tài khoản ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         if (!isCurrentUser($user->id)) {
             abort(404);
         }
-        return view('user.auth.manager_account', compact('user'));
+        return view('user.auth.manager_account', compact('user', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function managerOrder(User $user)
     {
+        $meta_description = "Đơn hàng ATVSHOP";
+        $meta_title = "Đơn hàng ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         if (!isCurrentUser($user->id)) {
             abort(404);
         }
         $orders = $this->orderRepo->getOrderOfUser($user);
-        return view('user.auth.manager_order', compact('user', 'orders'));
+        return view('user.auth.manager_order', compact('user', 'orders', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function search(Request $request)
@@ -145,7 +207,13 @@ class HomeController extends Controller
         $priceArr = $request->sort_price ?? [];
         $categoryArr = $request->category_slug ?? [];
         $brandArr = $request->brand_slug ?? [];
-        return view('user.product.search', compact('products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr'));
+
+        $meta_description = "Mua bán điện thoại, máy tính, phụ kiện chính hãng";
+        $meta_title = "Mua bán điện thoại, máy tính, phụ kiện chính hãng";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
+        return view('user.product.search', compact('products', 'categories_product', 'brands', 'priceArr', 'categoryArr', 'brandArr', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function rating(Request $request)
@@ -207,11 +275,16 @@ class HomeController extends Controller
 
     public function detailOrder($order_code)
     {
+        $meta_description = "Mua bán điện thoại, máy tính, tai nghe, phụ kiện chính hãng";
+        $meta_title = "Điện thoại, máy tính, tai nghe, phụ kiện chính hãng";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         $order = $this->orderRepo->search($order_code, 'order_code', ['orderDetails', 'shipping', 'orderDetails.product', 'coupon']);
         if (!$order || !isCurrentUser($order->user_id)) {
             abort(404);
         }
-        return view('user.auth.detail_order', compact('order'));
+        return view('user.auth.detail_order', compact('order', 'meta_description', 'meta_title', 'url_canonical', 'meta_image'));
     }
 
     public function countCart()

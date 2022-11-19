@@ -2,12 +2,6 @@
 
 @section('title', 'ATVSHOP')
 
-@push('css')
-    <style>
-
-    </style>
-@endpush
-
 @section('content')
     <div class="container mt-5">
         @include('admin.layouts.alert')

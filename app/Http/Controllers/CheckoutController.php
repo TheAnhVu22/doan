@@ -25,8 +25,19 @@ class CheckoutController extends Controller
 
     public function showCart()
     {
+        $meta_description = "Giỏ hàng ATVSHOP";
+        $meta_title = "Giỏ hàng ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         $carts = \Session::has('cart') ? \Session::get('cart') : [];
-        return view('user.checkout.cart', compact('carts'));
+        return view('user.checkout.cart', compact(
+            'carts',
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function addProductToCard(Request $request)
@@ -96,6 +107,11 @@ class CheckoutController extends Controller
 
     public function checkoutForm(Request $request)
     {
+        $meta_description = "Thanh toán ATVSHOP";
+        $meta_title = "Thanh toán ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         $carts = \Session::get('cart');
         if (!$carts) {
             return redirect()->route('cart.index');
@@ -120,7 +136,19 @@ class CheckoutController extends Controller
                 }
             }
         }
-        return view('user.checkout.checkout', compact('carts', 'cities', 'districts', 'wards', 'feeShip', 'discount', 'couponCode'));
+        return view('user.checkout.checkout', compact(
+            'carts',
+            'cities',
+            'districts',
+            'wards',
+            'feeShip',
+            'discount',
+            'couponCode',
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function applyCoupon(Request $request)

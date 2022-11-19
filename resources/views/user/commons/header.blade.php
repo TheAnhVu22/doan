@@ -75,9 +75,9 @@
                         <span><i class="fas fa-laptop"></i> <span class="text-nowrap">Máy tính</span></span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('category_product', ['slug' => 'tai-nghe']) }}"
-                        class="d-flex mb-1 align-items-center {{ Request::segment(2) == 'tai-nghe' ? 'active' : '' }}">
-                        <span><i class="fas fa-headphones"></i> <span class="text-nowrap">Tai nghe</span></span></a>
+                    <a href="{{ route('category_product', ['slug' => 'may-tinh-bang']) }}"
+                        class="d-flex mb-1 align-items-center {{ Request::segment(2) == 'may-tinh-bang' ? 'active' : '' }}">
+                        <span><i class="fas fa-tablet-alt"></i> <span class="text-nowrap">Máy tính bảng</span></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('category_product', ['slug' => 'dong-ho']) }}"

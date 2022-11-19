@@ -85,10 +85,21 @@ class UserController extends Controller
 
     public function updateUserInfo(User $user)
     {
+        $meta_description = "Cập nhật tài khoản ATVSHOP";
+        $meta_title = "Cập nhật tài khoản ATVSHOP";
+        $url_canonical = \URL::current();
+        $meta_image = asset('images/No_avatar.png');
+
         if (!isCurrentUser($user->id)) {
             abort(404);
         }
-        return view('user.auth.edit', compact('user'));
+        return view('user.auth.edit', compact(
+            'user',
+            'meta_description',
+            'meta_title',
+            'url_canonical',
+            'meta_image'
+        ));
     }
 
     public function updateAccount(UserUpdateRequest $request, User $user)

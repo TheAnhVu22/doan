@@ -2,12 +2,6 @@
 
 @section('title', 'ATVSHOP')
 
-@push('css')
-    <style>
-
-    </style>
-@endpush
-
 @section('content')
     <div class="container mt-5 d-flex justify-content-center" style="max-height: 300px">
         <div class="card col-md-6">

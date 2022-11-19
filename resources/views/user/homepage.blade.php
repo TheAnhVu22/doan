@@ -6,65 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/carousel_custom.css') }}">
-    <style>
-        .image-brand {
-            max-height: 90px;
-        }
-
-        .img-brand {
-            max-width: 100%;
-            max-height: 100%;
-            height: auto;
-        }
-
-        .link-brand {
-            box-shadow: rgba(92, 91, 91, 0.16) 1px 1px 1px;
-        }
-
-        .link-brand:hover {
-            background-color: white;
-        }
-
-        .new_product {
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-        }
-
-        .link_new_product:hover {
-            background-color: white;
-        }
-
-        #phone .card-header {
-            background-image: linear-gradient(to bottom,
-                    rgba(4, 255, 0, 0.5),
-                    rgba(0, 0, 255, 0.5));
-        }
-
-        #laptop .card-header {
-            background-image: linear-gradient(to bottom,
-                    rgba(255, 255, 0, 0.5),
-                    rgba(0, 0, 255, 0.5));
-        }
-
-        #tivi .card-header {
-            background-image: linear-gradient(to bottom,
-                    rgba(4, 255, 0, 0.5),
-                    rgba(255, 106, 0, 0.5));
-        }
-
-        #headphone .card-header {
-            background-image: linear-gradient(to bottom,
-                    rgba(255, 247, 0, 0.5),
-                    rgba(255, 0, 115, 0.5));
-        }
-
-        #watch .card-header {
-            background-image: linear-gradient(to bottom,
-                    rgba(4, 255, 0, 0.5),
-                    rgba(255, 0, 221, 0.5));
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
 @endpush
 
 @section('content')
