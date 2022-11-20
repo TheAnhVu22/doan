@@ -30,19 +30,20 @@
                         <label for="note">Ghi chú (chi tiết giao hàng):</label>
                         <textarea class="form-control" name="note" rows="3" autocomplete="off" id="note">{{ old('note') }}</textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Chọn hình thức thanh toán</label>
-                        @if (!Session::get('paypal_success'))
-                            <select name="payment_method" class="form-control input-sm m-bot15 payment_method">
-                                @foreach (\App\Models\Order::PAYMENT_METHOD as $payment => $text)
-                                    <option value={{ $payment }}>{{ $text }}</option>
-                                @endforeach
-                            </select>
-                        @else
-                            <select name="payment_method" class="form-control input-sm m-bot15 payment_method">
-                                <option value="2">Đã thanh toán bằng paypal</option>
-                            </select>
-                        @endif
+                    <div class="form-group border border-warning p-3">
+                        <label><b>Chọn hình thức thanh toán</b></label>
+                        @foreach (\App\Models\Order::PAYMENT_METHOD as $payment => $text)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method"
+                                    value={{ $payment }}>
+                                <label class="form-check-label">
+                                    {{ $text }}
+                                    @if ($payment === 2)
+                                        <i class="fab fa-cc-paypal"></i>
+                                    @endif
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-sm-6">

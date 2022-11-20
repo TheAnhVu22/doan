@@ -35,6 +35,7 @@
                         <th>Tên khách hàng</th>
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
+                        <th>Thanh toán</th>
                         <th>Trạng thái</th>
                         <th></th>
                         <th></th>
@@ -59,6 +60,7 @@
                             <td>{{ $order->shipping->shipping_name }}</td>
                             <td>{{ \Carbon\Carbon::parse($order->created_at)->format('Y/m/d h:i:s') }}</td>
                             <td>{{ number_format($totalPrice + $order->fee_ship, 0, ',', '.') }}đ</td>
+                            <td>{{ $order->shipping?->payment_method === \App\Models\Order::PAYMENT_EWALLET ? 'Đã thanh toán bằng paypal' : 'Thanh toán khi nhận hàng' }}</td>
                             <td>{{ $order->deleted_at ? 'Đã hủy' : $order->getStatusOrder($order->status) }}</td>
                             <td>
                                 @if (!$order->deleted_at && $order->status === \App\Models\Order::STATUS_NEW)
@@ -82,7 +84,7 @@
                                                 class="btn btn-primary m-1">Cập
                                                 nhật</a>
                                         @endif
-                                        @if ($order->status === \App\Models\Order::STATUS_NEW)
+                                        @if ($order->status === \App\Models\Order::STATUS_NEW && $order->shipping?->payment_method === \App\Models\Order::PAYMENT_CASH)
                                             <button class="btn btn-danger m-1 btnDelete" data-toggle="modal"
                                                 data-target="#modalDelete"
                                                 data-action="{{ route('order.destroy', ['order' => $order]) }}">

@@ -119,10 +119,10 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         try {
-            if ($order->status === Order::STATUS_NEW) {
+            if ($order->status === Order::STATUS_NEW && $order->shipping?->payment_method === \App\Models\Order::PAYMENT_CASH) {
                 $this->orderRepo->cancelOrder($order);
             } else {
-                return back()->withErrors('Không thể hủy đơn đã được duyệt!');
+                return back()->withErrors('Không thể hủy đơn đã được duyệt hoặc đã được thanh toán!');
             }
         } catch (Exception $e) {
             return back()->withErrors($e->getMessage())->withInput();

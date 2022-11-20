@@ -53,15 +53,16 @@
             <div class="row">
                 <div class="form-group col-4 rounded border p-3">
                     <label for="roles">Phương thức thanh toán:</label>
-                    @foreach (\App\Models\Order::PAYMENT_METHOD as $payment => $text)
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method"
-                                value='{{ $payment }}' @if ((old('payment_method') ?? $order->shipping?->payment_method) === $payment) checked @endif>
+                    <div class="form-check">
+                        @if ($order->id)
+                            {{ $order->shipping?->payment_method === \App\Models\Order::PAYMENT_EWALLET ? 'Đã thanh toán bằng paypal' : 'Thanh toán khi nhận hàng' }}
+                        @else
+                            <input class="form-check-input" type="radio" name="payment_method" value='1' checked>
                             <label class="form-check-label">
-                                {{ $text }}
+                                Thanh toán bằng tiền mặt
                             </label>
-                        </div>
-                    @endforeach
+                        @endif
+                    </div>
                 </div>
 
                 @if ($order->id)

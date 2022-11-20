@@ -65,6 +65,10 @@ Route::middleware('auth:user')->group(function () {
     Route::get('/manager-order/{user}', [HomeController::class, 'managerOrder'])->name('manager_order');
     Route::get('/update-account/{user}', [UserController::class, 'updateUserInfo'])->name('update_info_account');
     Route::put('update-account/{user}', [UserController::class, 'updateAccount'])->name('update_account');
+
+    Route::get('process-transaction', [CheckoutController::class, 'processTransaction'])->name('processTransaction');
+    Route::get('success-transaction', [CheckoutController::class, 'successTransaction'])->name('successTransaction');
+    Route::get('cancel-transaction', [CheckoutController::class, 'cancelTransaction'])->name('cancelTransaction');
 });
 
 Route::prefix('/admin')->group(function () {

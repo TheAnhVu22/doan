@@ -8,7 +8,9 @@ use App\Models\District;
 use App\Models\Ward;
 use App\Repositories\ProductRepository;
 use App\Services\CheckoutService;
+use Exception;
 use Illuminate\Http\Request;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class CheckoutController extends Controller
 {
@@ -213,6 +215,10 @@ class CheckoutController extends Controller
     public function checkoutStore(CheckoutStoreRequest $request)
     {
         $parrams = $request->validated();
+        if ($parrams['payment_method'] == 2) {
+            \Session::put('parrams_cart', $parrams);
+            return redirect()->route('processTransaction');
+        }
         $result = $this->checkoutService->checkoutStore($parrams);
         if ($result) {
             return redirect()->route('manager_order', ['user' => \Auth::guard('user')->user()])->with('status', 'Đặt hàng thành công!');
@@ -242,5 +248,81 @@ class CheckoutController extends Controller
         }
 
         return response()->json(['error' => 'Thông tin không chính xác']);
+    }
+
+    public function processTransaction()
+    {
+        $usd =  \Session::get('totalusd');
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('successTransaction'),
+                "cancel_url" => route('cancelTransaction'),
+            ],
+            "purchase_units" => [
+                0 => [
+                    "amount" => [
+                        "currency_code" => "USD",
+                        "value" => $usd
+                    ]
+                ]
+            ]
+        ]);
+
+        if (isset($response['id']) && $response['id'] != null) {
+
+            foreach ($response['links'] as $links) {
+                if ($links['rel'] == 'approve') {
+                    return redirect()->away($links['href']);
+                }
+            }
+
+            return redirect()
+                ->route('cart.checkout')
+                ->with('error', 'Lỗi thanh toán bằng paypal!');
+        } else {
+            return redirect()
+                ->route('cart.checkout')
+                ->with('error', $response['message'] ?? 'Lỗi thanh toán bằng paypal!');
+        }
+    }
+
+    public function successTransaction(Request $request)
+    {
+        \DB::beginTransaction();
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->getAccessToken();
+        $response = $provider->capturePaymentOrder($request['token']);
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            $parrams = \Session::pull('parrams_cart');
+            $result = $this->checkoutService->checkoutStore($parrams);
+            if ($result) {
+                \DB::commit();
+                return redirect()->route('manager_order', ['user' => \Auth::guard('user')->user()])->with('status', 'Đặt hàng thành công!');
+            } else {
+                \Session::forget('parrams_cart');
+                DB::rollBack();
+                return back()->withErrors('Có lỗi xảy ra!');
+            }
+        } else {
+            \Session::forget('parrams_cart');
+            DB::rollBack();
+            return redirect()
+                ->route('cart.checkout')
+                ->with('error', $response['message'] ?? 'Lỗi thanh toán bằng paypal!');
+        }
+    }
+
+    public function cancelTransaction(Request $request)
+    {
+        return redirect()
+            ->route('cart.checkout')
+            ->with('error', $response['message'] ?? 'Hủy thanh toán đơn hàng');
     }
 }

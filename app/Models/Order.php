@@ -13,8 +13,8 @@ class Order extends BaseModel
     const PAYMENT_EWALLET = 2;
 
     const PAYMENT_METHOD = [
-        self::PAYMENT_CASH => 'Tiền mặt',
-        self::PAYMENT_EWALLET => 'Ví điện tử'
+        self::PAYMENT_CASH => 'Thanh toán khi nhận hàng',
+        self::PAYMENT_EWALLET => 'Thanh toán bằng Paypal'
     ];
 
     const STATUS_NEW = 1;

@@ -222,6 +222,7 @@ class CheckoutService
             \Mail::to($email)->send(new MailNotifyOrder($emailInfo));
 
             \Session::forget('cart');
+            \Session::forget('totalusd');
         } catch (Exception $e) {
             DB::rollBack();
             return back()->withErrors($e->getMessage())->withInput();
@@ -235,11 +236,11 @@ class CheckoutService
         DB::beginTransaction();
         try {
             $order = Order::where('order_code', $request['order_code'])->ofNewOrder()->ofUser($request['user_id'])->first();
-            if ($order) {
+            if ($order->shipping?->payment_method === Order::PAYMENT_CASH) {
 
                 $shipping = $order->shipping;
-                $order->coupon->increment('quantity');
-                $order->coupon->save();
+                $order->coupon?->increment('quantity');
+                $order->coupon?->save();
                 $order->orderDetails()->delete();
                 $order->delete();
 

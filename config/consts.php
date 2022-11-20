@@ -3,6 +3,7 @@ return [
     'PAGINATE' => 10,
     'UNBLOCK' => 1,
     'BLOCK' => 2,
+    'DOLLAR_TO_VND' => 24807,
     'SORT_BY' => [
         1 => 'Mới nhất',
         2 => 'Lượt xem'

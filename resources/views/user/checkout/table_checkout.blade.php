@@ -57,6 +57,10 @@
             <input type="hidden" name="feeShip" id="feeShip" value={{ $feeShip }}>
             <input type="hidden" id="totalPrice" value={{ $totalPrice }}>
             <input type="hidden" id="couponCode" name="coupon_code" value={{ $couponCode }}>
+            @php
+                $vnd_to_usd = round($finalTotalPrice / config('consts.DOLLAR_TO_VND'), 2);
+                Session::put('totalusd', $vnd_to_usd);
+            @endphp
         @else
             <tr>
                 <td colspan="5" class="text-center">Chưa có sản phẩm nào trong giỏ hàng</td>
